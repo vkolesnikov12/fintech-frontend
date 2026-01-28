@@ -1,0 +1,35 @@
+.profile {
+	background: #ffffff;
+	border-radius: 16px;
+	padding: 24px;
+	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+	max-width: 760px;
+}
+
+.profile__header {
+	margin-bottom: 20px;
+}
+
+.profile__form .ant-form-item-label > label {
+	font-weight: 500;
+}
+
+.profile__grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(220px, 1fr));
+	gap: 12px 16px;
+}
+
+.profile__form .ant-btn-primary {
+	background: #1b4c63;
+	border-color: #1b4c63;
+	border-radius: 12px;
+	height: 40px;
+	font-weight: 600;
+}
+
+@media (max-width: 760px) {
+	.profile__grid {
+		grid-template-columns: 1fr;
+	}
+}

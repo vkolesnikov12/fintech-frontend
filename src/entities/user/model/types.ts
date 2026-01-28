@@ -18,3 +18,11 @@ export interface User {
 	role: UserRole
 	active: boolean
 }
+
+export interface UpdateUserRequest {
+	email?: string
+	phone?: string
+	firstName?: string
+	lastName?: string
+	birthDate?: IsoDateString
+}

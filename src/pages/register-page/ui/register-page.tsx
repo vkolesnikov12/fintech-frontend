@@ -14,7 +14,7 @@ import {
 	message,
 } from 'antd'
 import type { Dayjs } from 'dayjs'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useRegisterMutation } from '../../../features/auth/api/auth-api'
 import '../../../shared/ui/auth/auth-page.css'
 
@@ -33,6 +33,7 @@ interface RegisterFormValues {
 export function RegisterPage() {
 	const [register, { isLoading }] = useRegisterMutation()
 	const [messageApi, contextHolder] = message.useMessage()
+	const navigate = useNavigate()
 
 	const handleSubmit = async (values: RegisterFormValues) => {
 		try {
@@ -46,6 +47,7 @@ export function RegisterPage() {
 				birthDate: values.birthDate.format('YYYY-MM-DD'),
 			}).unwrap()
 			messageApi.success('Регистрация завершена успешно')
+			navigate('/app')
 		} catch {
 			messageApi.error('Не удалось зарегистрироваться')
 		}

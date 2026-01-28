@@ -1,73 +1,150 @@
-# React + TypeScript + Vite
+# Bank Fintech Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Документ для согласования с backend-разработчиком. Здесь описано,
+что уже реализовано, какие контракты используются и что ожидать
+от API.
 
-Currently, two official plugins are available:
+## Стек и архитектура
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React + TypeScript + Vite
+- Redux Toolkit + RTK Query
+- Ant Design
+- FSD-структура (app, pages, widgets, features, entities, shared)
 
-## React Compiler
+## Быстрый запуск
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Переменные окружения
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+VITE_API_BASE_URL=/api
+VITE_MOCK_AUTH=true
 ```
+
+- `VITE_API_BASE_URL` — базовый URL API (по умолчанию `/api`)
+- `VITE_MOCK_AUTH=true` — включает мок‑сессию без бэкенда
+
+## Реализовано (Спринт 1)
+
+### Auth Module
+
+- `LoginPage`, `RegisterPage` с версткой по макету
+- Интеграция с Auth-Service
+- Сохранение токенов и подстановка `Authorization` в RTK Query
+
+### Основной Layout
+
+- `MainLayout` + `Header` + `Sidebar`
+- Навигация по ролям: `CLIENT`, `MANAGER`, `ADMIN`
+- Protected Routes
+
+### Профиль и заглушки
+
+- `ProfilePage` (просмотр/редактирование)
+- Заглушки и мок‑данные для разделов
+
+## Роуты приложения
+
+- `/login`
+- `/register`
+- `/app` (dashboard)
+- `/app/accounts`
+- `/app/profile`
+- Остальные страницы — заглушки
+
+## Контракты API (ожидается)
+
+### Auth-Service
+
+`POST /api/auth/login`
+
+```json
+{
+	"login": "string",
+	"password": "string"
+}
+```
+
+`POST /api/auth/register`
+
+```json
+{
+	"username": "string",
+	"email": "string",
+	"phone": "string",
+	"password": "string",
+	"firstName": "string",
+	"lastName": "string",
+	"birthDate": "YYYY-MM-DD"
+}
+```
+
+Ожидаемый ответ `AuthResponse`:
+
+```json
+{
+	"accessToken": "string",
+	"refreshToken": "string",
+	"userInfo": {
+		"id": 1,
+		"username": "string",
+		"email": "string",
+		"phone": "string",
+		"passwordHash": "string",
+		"firstName": "string",
+		"lastName": "string",
+		"birthDate": "YYYY-MM-DD",
+		"registrationDate": "YYYY-MM-DDTHH:mm:ss",
+		"role": "CLIENT | MANAGER | ADMIN",
+		"active": true
+	}
+}
+```
+
+### Users-Service
+
+`PUT /api/users/{id}`
+
+```json
+{
+	"email": "string",
+	"phone": "string",
+	"firstName": "string",
+	"lastName": "string",
+	"birthDate": "YYYY-MM-DD"
+}
+```
+
+Ожидаемый ответ: `User` (как в AuthResponse).
+
+## Правила передачи токена
+
+Токен берется из `localStorage` и добавляется в заголовок:
+
+```
+Authorization: Bearer <accessToken>
+```
+
+## Форматы данных
+
+- Даты: `YYYY-MM-DD`
+- Дата/время: `YYYY-MM-DDTHH:mm:ss`
+- Суммы: число (decimal)
+
+## Мок‑данные
+
+Если `VITE_MOCK_AUTH=true`, то:
+- создается мок‑пользователь
+- токены ставятся как `mock-access-token`
+- доступ к `/app` открыт без бэка
+
+## Что нужно подтвердить с backend
+
+- Поле логина: `login` vs `username/email/phone`
+- Форматы дат и таймзон
+- Состав `AuthResponse` и `User`
+- Наличие refresh‑эндпоинта и логика обновления токена

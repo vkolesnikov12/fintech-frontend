@@ -1,6 +1,11 @@
 import { baseApi } from '../../../shared/api/base-api'
+import { setSessionUser } from '../../../shared/lib/auth-session'
 import { setTokens } from '../../../shared/lib/token-storage'
-import type { AuthResponse, LoginRequest, RegisterRequest } from '../model/types'
+import type {
+	AuthResponse,
+	LoginRequest,
+	RegisterRequest,
+} from '../model/types'
 
 export const authApi = baseApi.injectEndpoints({
 	endpoints: (build) => ({
@@ -17,6 +22,7 @@ export const authApi = baseApi.injectEndpoints({
 						accessToken: data.accessToken,
 						refreshToken: data.refreshToken,
 					})
+					setSessionUser(data.userInfo)
 				} catch {
 					// handled in UI
 				}
@@ -35,6 +41,7 @@ export const authApi = baseApi.injectEndpoints({
 						accessToken: data.accessToken,
 						refreshToken: data.refreshToken,
 					})
+					setSessionUser(data.userInfo)
 				} catch {
 					// handled in UI
 				}
@@ -43,4 +50,7 @@ export const authApi = baseApi.injectEndpoints({
 	}),
 })
 
-export const { useLoginMutation, useRegisterMutation } = authApi
+export const {
+	useLoginMutation,
+	useRegisterMutation,
+} = authApi

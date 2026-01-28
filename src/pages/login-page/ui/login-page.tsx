@@ -14,7 +14,7 @@ import {
 	Typography,
 	message,
 } from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useLoginMutation } from '../../../features/auth/api/auth-api'
 import '../../../shared/ui/auth/auth-page.css'
 
@@ -29,6 +29,7 @@ interface LoginFormValues {
 export function LoginPage() {
 	const [login, { isLoading }] = useLoginMutation()
 	const [messageApi, contextHolder] = message.useMessage()
+	const navigate = useNavigate()
 
 	const handleSubmit = async (values: LoginFormValues) => {
 		try {
@@ -37,6 +38,7 @@ export function LoginPage() {
 				password: values.password,
 			}).unwrap()
 			messageApi.success('Вы успешно вошли в систему')
+			navigate('/app')
 		} catch {
 			messageApi.error('Не удалось войти. Проверьте данные')
 		}

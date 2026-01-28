@@ -1,0 +1,192 @@
+.accounts {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.accounts__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.accounts__overview {
+	background: #ffffff;
+	border-radius: 16px;
+	padding: 24px;
+	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+}
+
+.accounts__cards {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(220px, 1fr));
+	gap: 16px;
+}
+
+.account-card {
+	border-radius: 16px;
+	border: 1px solid #eef1f5;
+	padding: 16px;
+	min-height: 140px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	background: #ffffff;
+	position: relative;
+}
+
+.account-card--active {
+	border: 2px solid #1b4c63;
+	box-shadow: 0 12px 24px rgba(27, 76, 99, 0.08);
+}
+
+.account-card--active::after {
+	content: '';
+	position: absolute;
+	left: 50%;
+	bottom: -10px;
+	width: 16px;
+	height: 16px;
+	background: #ffffff;
+	border: 2px solid #1b4c63;
+	transform: translateX(-50%) rotate(45deg);
+	border-radius: 2px;
+}
+
+.account-card__icon {
+	width: 32px;
+	height: 32px;
+	border-radius: 10px;
+	background: #eef2f5;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: #1b4c63;
+	margin-bottom: 4px;
+}
+
+.account-card__status {
+	align-self: flex-end;
+	font-size: 11px;
+	color: #1f9b4f;
+	background: rgba(31, 155, 79, 0.12);
+	padding: 4px 8px;
+	border-radius: 999px;
+	font-weight: 600;
+}
+
+.account-card__title {
+	color: rgba(0, 0, 0, 0.6);
+	font-size: 13px;
+}
+
+.account-card__balance {
+	font-size: 22px;
+	font-weight: 600;
+	color: #1f2b35;
+}
+
+.account-card__footer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.account-card__footer .ant-btn-link {
+	padding: 0;
+	color: #1b4c63;
+	font-weight: 500;
+}
+
+.accounts__transactions {
+	background: #ffffff;
+	border-radius: 16px;
+	padding: 16px 20px 20px;
+	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+}
+
+.accounts__toolbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 16px;
+	gap: 16px;
+	flex-wrap: wrap;
+}
+
+.accounts__filters {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.accounts__filters .ant-input-affix-wrapper {
+	border-radius: 10px;
+	height: 36px;
+}
+
+.accounts__filters .ant-btn {
+	height: 36px;
+	border-radius: 10px;
+}
+
+.accounts__toolbar .ant-segmented {
+	background: #f3f5f8;
+	border-radius: 12px;
+	padding: 4px;
+}
+
+.accounts__toolbar .ant-segmented-item {
+	border-radius: 10px;
+	font-weight: 500;
+}
+
+.accounts__toolbar .ant-segmented-item-selected {
+	background: #1b4c63;
+	color: #ffffff;
+}
+
+.accounts-table {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.accounts-table__row {
+	display: grid;
+	grid-template-columns: 2fr 1fr 1fr 0.8fr;
+	align-items: center;
+	gap: 12px;
+	padding: 10px 0;
+	border-bottom: 1px solid #f0f2f5;
+	font-size: 13px;
+}
+
+.accounts-table__row--head {
+	font-size: 11px;
+	color: rgba(0, 0, 0, 0.45);
+	font-weight: 600;
+	text-transform: uppercase;
+	border-bottom: 1px solid #eef1f5;
+}
+
+.accounts-table__title {
+	font-weight: 600;
+	color: #1f2b35;
+}
+
+.accounts-table__amount--positive {
+	color: #17a34a;
+	font-weight: 600;
+}
+
+.accounts-table__amount--negative {
+	color: #111827;
+	font-weight: 600;
+}
+
+@media (max-width: 1200px) {
+	.accounts__cards {
+		grid-template-columns: 1fr;
+	}
+}
