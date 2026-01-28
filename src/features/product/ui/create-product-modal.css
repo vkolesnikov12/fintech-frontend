@@ -1,0 +1,26 @@
+.create-product-modal .ant-modal-body {
+	padding-top: 12px;
+}
+
+.create-product-modal__grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(180px, 1fr));
+	gap: 12px 16px;
+}
+
+.create-product-modal__section {
+	display: block;
+	margin-bottom: 12px;
+	font-weight: 600;
+	color: #1f2b35;
+}
+
+.create-product-modal .ant-input-number {
+	width: 100%;
+}
+
+@media (max-width: 720px) {
+	.create-product-modal__grid {
+		grid-template-columns: 1fr;
+	}
+}

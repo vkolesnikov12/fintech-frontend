@@ -46,6 +46,7 @@ VITE_MOCK_AUTH=true
 
 - `ProfilePage` (просмотр/редактирование)
 - Заглушки и мок‑данные для разделов
+- Модальное окно "Добавить продукт" с формой под Swagger
 
 ## Роуты приложения
 
@@ -121,6 +122,65 @@ VITE_MOCK_AUTH=true
 
 Ожидаемый ответ: `User` (как в AuthResponse).
 
+### Product-Service
+
+Swagger: `swagger_product.json`
+
+`GET /api/products`
+
+Query params: `page`, `size`, `sort` + фильтры `type`, `status`, `minRate`,
+`maxRate`, `currency`, `name`
+
+`GET /api/products/{id}`
+
+`POST /api/products`
+
+```json
+{
+	"code": "CRD-001",
+	"name": "Кредит наличными",
+	"description": "Описание продукта",
+	"type": "CREDIT | DEPOSIT | INVESTMENT",
+	"interestRate": 10.5,
+	"minAmount": 50000,
+	"maxAmount": 2000000,
+	"currency": "RUB | USD | EUR",
+	"active": true,
+	"creditProduct": {
+		"creditType": "CONSUMER | MORTGAGE | AUTO",
+		"requiresCollateral": false,
+		"repaymentSchedule": "ANNUITY | DIFFERENTIATED",
+		"termMonths": 12,
+		"earlyRepaymentFee": 0.5
+	},
+	"depositProduct": {
+		"replenishable": true,
+		"earlyWithdrawalAllowed": false,
+		"earlyWithdrawalPenalty": 1,
+		"termDays": 365,
+		"minBalanceForInterest": 1000
+	}
+}
+```
+
+`PUT /api/products/{id}`
+
+`PATCH /api/products/{id}/status`
+
+```json
+{
+	"active": false
+}
+```
+
+`DELETE /api/products/{id}`
+
+`GET /api/products/types/{type}`
+
+`GET /api/products/search`
+
+`GET /api/products/active`
+
 ## Правила передачи токена
 
 Токен берется из `localStorage` и добавляется в заголовок:
@@ -141,6 +201,7 @@ Authorization: Bearer <accessToken>
 - создается мок‑пользователь
 - токены ставятся как `mock-access-token`
 - доступ к `/app` открыт без бэка
+- "Добавить продукт" сохраняет payload локально (mock, без API)
 
 ## Что нужно подтвердить с backend
 
@@ -148,3 +209,4 @@ Authorization: Bearer <accessToken>
 - Форматы дат и таймзон
 - Состав `AuthResponse` и `User`
 - Наличие refresh‑эндпоинта и логика обновления токена
+- Структура `ProductDetailDTO` и поля `creditDetails` / `depositDetails`
