@@ -1,19 +1,15 @@
-import { Layout, Typography } from 'antd'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import './App.css'
+import { LoginPage } from './pages/login-page'
+import { RegisterPage } from './pages/register-page'
 
 function App() {
 	return (
-		<Layout className='app'>
-			<Layout.Content className='app__content'>
-				<Typography.Title level={2}>
-					Bank Fintech Frontend
-				</Typography.Title>
-				<Typography.Paragraph>
-					Стартовая настройка: интерфейсы, store и API слой
-					готовы.
-				</Typography.Paragraph>
-			</Layout.Content>
-		</Layout>
+		<Routes>
+			<Route path='/' element={<Navigate to='/login' replace />} />
+			<Route path='/login' element={<LoginPage />} />
+			<Route path='/register' element={<RegisterPage />} />
+		</Routes>
 	)
 }
 
