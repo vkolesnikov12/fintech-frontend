@@ -1,0 +1,53 @@
+.documents {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.documents__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 16px;
+}
+
+.documents__filters {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.documents__filters .ant-select {
+	min-width: 180px;
+}
+
+.documents__table {
+	background: #ffffff;
+	border-radius: 16px;
+	padding: 12px 16px;
+	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+}
+
+.documents__actions {
+	display: flex;
+	gap: 8px;
+}
+
+.documents__table .ant-table-thead > tr > th {
+	background: #f8fafc;
+	font-weight: 600;
+}
+
+.documents__table .ant-table {
+	background: transparent;
+}
+
+.documents__table .ant-btn-link {
+	padding: 0;
+	color: #1b4c63;
+	font-weight: 500;
+}
+
+.documents__table .ant-btn-link.ant-btn-dangerous {
+	color: #ef4444;
+}

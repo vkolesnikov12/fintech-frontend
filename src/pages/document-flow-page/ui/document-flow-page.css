@@ -1,0 +1,104 @@
+.document-flow {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.document-flow__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 16px;
+}
+
+.document-flow__header-actions {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.document-flow__filters {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.document-flow__filters .ant-input {
+	min-width: 200px;
+}
+
+.document-flow__grid {
+	display: grid;
+	grid-template-columns: minmax(320px, 2fr) minmax(260px, 1fr);
+	gap: 16px;
+}
+
+.document-flow__table,
+.document-flow__preview,
+.document-flow__history {
+	background: #ffffff;
+	border-radius: 16px;
+	padding: 16px 20px;
+	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+}
+
+.document-flow__section-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 12px;
+}
+
+.document-flow__section-header .ant-btn-link {
+	padding: 0;
+	color: #1b4c63;
+	font-weight: 500;
+}
+
+.document-flow__preview-box {
+	height: 220px;
+	border-radius: 12px;
+	background: #f8fafc;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.document-flow__history-list {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.document-flow__history-item {
+	background: #f8fafc;
+	border-radius: 12px;
+	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.document-flow__history-title {
+	font-weight: 600;
+	color: #1f2b35;
+}
+
+.document-flow__actions .ant-btn {
+	border-radius: 10px;
+}
+
+.document-flow__table .ant-table-thead > tr > th {
+	background: #f8fafc;
+	font-weight: 600;
+}
+
+.document-flow__table .ant-table {
+	background: transparent;
+}
+
+@media (max-width: 1100px) {
+	.document-flow__grid {
+		grid-template-columns: 1fr;
+	}
+}

@@ -11,7 +11,7 @@ export const authApi = baseApi.injectEndpoints({
 	endpoints: (build) => ({
 		login: build.mutation<AuthResponse, LoginRequest>({
 			query: (body) => ({
-				url: '/auth/login',
+				url: '/v1/auth/login',
 				method: 'POST',
 				body,
 			}),
@@ -30,7 +30,7 @@ export const authApi = baseApi.injectEndpoints({
 		}),
 		register: build.mutation<AuthResponse, RegisterRequest>({
 			query: (body) => ({
-				url: '/auth/register',
+				url: '/v1/auth/register',
 				method: 'POST',
 				body,
 			}),

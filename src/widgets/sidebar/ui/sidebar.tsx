@@ -1,13 +1,21 @@
 import {
 	AppstoreOutlined,
+	AppstoreAddOutlined,
 	CreditCardOutlined,
 	CustomerServiceOutlined,
 	FileTextOutlined,
+	FormOutlined,
+	LineChartOutlined,
+	MoneyCollectOutlined,
 	SettingOutlined,
 	SwapOutlined,
 	TeamOutlined,
 	UserOutlined,
 	WalletOutlined,
+	FileSearchOutlined,
+	AlertOutlined,
+	CalendarOutlined,
+	BarChartOutlined,
 } from '@ant-design/icons'
 import { Layout, Menu, Typography } from 'antd'
 import { Link, useLocation } from 'react-router-dom'
@@ -56,9 +64,63 @@ const baseItems: NavigationItem[] = [
 		icon: <FileTextOutlined />,
 		path: '/app/documents',
 	},
+	{
+		key: 'applications',
+		label: 'Мои заявки',
+		icon: <FormOutlined />,
+		path: '/app/applications',
+	},
+	{
+		key: 'loan-payments',
+		label: 'Платежи по кредиту',
+		icon: <MoneyCollectOutlined />,
+		path: '/app/loan-payments',
+	},
 ]
 
 const managerItems: NavigationItem[] = [
+	{
+		key: 'manager-dashboard',
+		label: 'Панель менеджера',
+		icon: <LineChartOutlined />,
+		path: '/app/manager-dashboard',
+	},
+	{
+		key: 'application-pipeline',
+		label: 'Воронка заявок',
+		icon: <AppstoreAddOutlined />,
+		path: '/app/application-pipeline',
+	},
+	{
+		key: 'document-flow',
+		label: 'Документооборот',
+		icon: <FileSearchOutlined />,
+		path: '/app/document-flow',
+	},
+	{
+		key: 'system-monitoring',
+		label: 'Мониторинг системы',
+		icon: <AlertOutlined />,
+		path: '/app/system-monitoring',
+	},
+	{
+		key: 'job-management',
+		label: 'Управление задачами',
+		icon: <CalendarOutlined />,
+		path: '/app/job-management',
+	},
+	{
+		key: 'system-configuration',
+		label: 'Конфигурация системы',
+		icon: <SettingOutlined />,
+		path: '/app/system-configuration',
+	},
+	{
+		key: 'analytics-reports',
+		label: 'Аналитика и отчеты',
+		icon: <BarChartOutlined />,
+		path: '/app/analytics-reports',
+	},
 	{
 		key: 'users',
 		label: 'Пользователи',
@@ -75,10 +137,10 @@ const managerItems: NavigationItem[] = [
 
 const systemItems: NavigationItem[] = [
 	{
-		key: 'profile',
-		label: 'Профиль',
+		key: 'profile-settings',
+		label: 'Профиль и настройки',
 		icon: <UserOutlined />,
-		path: '/app/profile',
+		path: '/app/profile-settings',
 	},
 	{
 		key: 'settings',

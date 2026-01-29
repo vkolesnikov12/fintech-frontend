@@ -1,7 +1,11 @@
 import type { ReactElement } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
 import type { UserRole } from '../../entities/user/model/types'
-import { ensureMockSession, getSessionUser } from '../lib/auth-session'
+import {
+	ensureMockSession,
+	getForcedRole,
+	getSessionUser,
+} from '../lib/auth-session'
 import { getAccessToken } from '../lib/token-storage'
 
 interface ProtectedRouteProps {
@@ -17,12 +21,14 @@ export function ProtectedRoute({
 
 	const accessToken = getAccessToken()
 	const user = getSessionUser()
+	const forcedRole = getForcedRole()
+	const effectiveRole = forcedRole ?? user?.role
 
-	if (!accessToken) {
+	if (!accessToken && !forcedRole) {
 		return <Navigate to={redirectTo} replace />
 	}
 
-	if (allowedRoles && user && !allowedRoles.includes(user.role)) {
+	if (allowedRoles && effectiveRole && !allowedRoles.includes(effectiveRole)) {
 		return <Navigate to='/app' replace />
 	}
 

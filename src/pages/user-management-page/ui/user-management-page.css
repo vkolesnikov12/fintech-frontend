@@ -1,0 +1,91 @@
+.user-management {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.user-management__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 16px;
+}
+
+.user-management__filters {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.user-management__filters .ant-select,
+.user-management__filters .ant-input {
+	min-width: 200px;
+}
+
+.user-management__grid {
+	display: grid;
+	grid-template-columns: minmax(320px, 2fr) minmax(260px, 1fr);
+	gap: 16px;
+}
+
+.user-management__table,
+.user-management__history {
+	background: #ffffff;
+	border-radius: 16px;
+	padding: 16px 20px;
+	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+}
+
+.user-management__section-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 12px;
+}
+
+.user-management__section-header .ant-btn-link {
+	padding: 0;
+	color: #1b4c63;
+	font-weight: 500;
+}
+
+.user-management__history-list {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.user-management__history-item {
+	background: #f8fafc;
+	border-radius: 12px;
+	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.user-management__history-title {
+	font-weight: 600;
+	color: #1f2b35;
+}
+
+.user-management__table .ant-table-thead > tr > th {
+	background: #f8fafc;
+	font-weight: 600;
+}
+
+.user-management__table .ant-table {
+	background: transparent;
+}
+
+.user-management__modal {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+@media (max-width: 1100px) {
+	.user-management__grid {
+		grid-template-columns: 1fr;
+	}
+}

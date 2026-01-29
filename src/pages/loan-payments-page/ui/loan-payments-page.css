@@ -1,0 +1,111 @@
+.loan-payments {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.loan-payments__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 16px;
+}
+
+.loan-payments__grid {
+	display: grid;
+	grid-template-columns: minmax(320px, 2fr) minmax(260px, 1fr);
+	gap: 16px;
+}
+
+.loan-payments__schedule {
+	background: #ffffff;
+	border-radius: 16px;
+	padding: 16px 20px;
+	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+}
+
+.loan-payments__side {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.loan-payments__card {
+	background: #ffffff;
+	border-radius: 16px;
+	padding: 16px;
+	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.loan-payments__section-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 8px;
+}
+
+.loan-payments__section-header .ant-btn-link {
+	padding: 0;
+	color: #1b4c63;
+	font-weight: 500;
+}
+
+.loan-payments__field {
+	margin-top: 8px;
+}
+
+.loan-payments__field .ant-input-number {
+	width: 100%;
+	border-radius: 10px;
+}
+
+.loan-payments__history {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.loan-payments__history-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: #f8fafc;
+	padding: 12px;
+	border-radius: 12px;
+}
+
+.loan-payments__history-title {
+	font-weight: 600;
+	color: #1f2b35;
+}
+
+.loan-payments__history-amount {
+	font-weight: 600;
+	color: #111827;
+}
+
+.loan-payments__schedule .ant-table-thead > tr > th {
+	background: #f8fafc;
+	font-weight: 600;
+}
+
+.loan-payments__schedule .ant-table {
+	background: transparent;
+}
+
+.loan-payments__schedule .ant-btn-primary {
+	background: #1b4c63;
+	border-color: #1b4c63;
+	border-radius: 12px;
+	height: 40px;
+	font-weight: 600;
+}
+
+@media (max-width: 1100px) {
+	.loan-payments__grid {
+		grid-template-columns: 1fr;
+	}
+}

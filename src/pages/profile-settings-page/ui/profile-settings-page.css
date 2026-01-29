@@ -1,0 +1,87 @@
+.profile-settings {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.profile-settings__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 16px;
+}
+
+.profile-settings__card {
+	background: #ffffff;
+	border-radius: 16px;
+	padding: 16px 20px;
+	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+}
+
+.profile-settings__form {
+	margin-top: 8px;
+}
+
+.profile-settings__grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(220px, 1fr));
+	gap: 12px 16px;
+}
+
+.profile-settings__section {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding-bottom: 8px;
+}
+
+.profile-settings__stack {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.profile-settings__row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 12px;
+}
+
+.profile-settings__sessions {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.profile-settings__session {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: #f8fafc;
+	padding: 12px;
+	border-radius: 12px;
+}
+
+.profile-settings__session-title {
+	font-weight: 600;
+	color: #1f2b35;
+}
+
+.profile-settings__card .ant-tabs-tab {
+	font-weight: 500;
+}
+
+.profile-settings__card .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+	color: #1b4c63;
+}
+
+.profile-settings__card .ant-tabs-ink-bar {
+	background: #1b4c63;
+}
+
+@media (max-width: 900px) {
+	.profile-settings__grid {
+		grid-template-columns: 1fr;
+	}
+}

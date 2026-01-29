@@ -1,0 +1,151 @@
+.manager-dashboard {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.manager-dashboard__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 16px;
+}
+
+.manager-dashboard__metrics {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(200px, 1fr));
+	gap: 16px;
+}
+
+.manager-dashboard__metric-card {
+	background: #ffffff;
+	border-radius: 16px;
+	padding: 16px;
+	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	gap: 12px;
+	align-items: center;
+}
+
+.manager-dashboard__metric-icon {
+	width: 36px;
+	height: 36px;
+	border-radius: 12px;
+	background: #eef2f5;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: #1b4c63;
+	font-size: 18px;
+}
+
+.manager-dashboard__metric-value {
+	font-size: 20px;
+	font-weight: 600;
+	color: #1f2b35;
+}
+
+.manager-dashboard__metric-delta {
+	margin-left: auto;
+}
+
+.manager-dashboard__grid {
+	display: grid;
+	grid-template-columns: minmax(320px, 2fr) minmax(260px, 1fr);
+	gap: 16px;
+}
+
+.manager-dashboard__charts {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+}
+
+.manager-dashboard__chart-card {
+	background: #ffffff;
+	border-radius: 16px;
+	padding: 16px;
+	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+}
+
+.manager-dashboard__chart-placeholder {
+	height: 220px;
+	border-radius: 12px;
+	background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+}
+
+.manager-dashboard__chart-placeholder--small {
+	height: 160px;
+}
+
+.manager-dashboard__panel {
+	background: #ffffff;
+	border-radius: 16px;
+	padding: 16px;
+	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+}
+
+.manager-dashboard__section-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 12px;
+}
+
+.manager-dashboard__section-header .ant-btn-link {
+	padding: 0;
+	color: #1b4c63;
+	font-weight: 500;
+}
+
+.manager-dashboard__list,
+.manager-dashboard__team {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.manager-dashboard__list-item,
+.manager-dashboard__team-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: #f8fafc;
+	padding: 12px;
+	border-radius: 12px;
+	gap: 12px;
+}
+
+.manager-dashboard__list-title {
+	font-weight: 600;
+	color: #1f2b35;
+}
+
+.manager-dashboard__list-meta {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 6px;
+}
+
+.manager-dashboard__team-meta {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	min-width: 160px;
+}
+
+@media (max-width: 1200px) {
+	.manager-dashboard__metrics {
+		grid-template-columns: repeat(2, minmax(200px, 1fr));
+	}
+
+	.manager-dashboard__grid {
+		grid-template-columns: 1fr;
+	}
+
+	.manager-dashboard__charts {
+		grid-template-columns: 1fr;
+	}
+}

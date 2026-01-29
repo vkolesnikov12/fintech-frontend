@@ -1,0 +1,91 @@
+.system-monitoring {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.system-monitoring__header {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.system-monitoring__services {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(200px, 1fr));
+	gap: 16px;
+}
+
+.system-monitoring__service-card {
+	border-radius: 16px;
+	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+}
+
+.system-monitoring__metrics {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(200px, 1fr));
+	gap: 16px;
+}
+
+.system-monitoring__metric-card {
+	border-radius: 16px;
+	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+}
+
+.system-monitoring__grid {
+	display: grid;
+	grid-template-columns: minmax(320px, 2fr) minmax(260px, 1fr);
+	gap: 16px;
+}
+
+.system-monitoring__panel {
+	background: #ffffff;
+	border-radius: 16px;
+	padding: 16px 20px;
+	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+}
+
+.system-monitoring__chart {
+	height: 220px;
+	border-radius: 12px;
+	background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+}
+
+.system-monitoring__alerts {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-top: 12px;
+}
+
+.system-monitoring__alert {
+	background: #f8fafc;
+	border-radius: 12px;
+	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.system-monitoring__panel .ant-table-thead > tr > th {
+	background: #f8fafc;
+	font-weight: 600;
+}
+
+.system-monitoring__panel .ant-table {
+	background: transparent;
+}
+
+@media (max-width: 1200px) {
+	.system-monitoring__services {
+		grid-template-columns: repeat(2, minmax(200px, 1fr));
+	}
+
+	.system-monitoring__metrics {
+		grid-template-columns: 1fr;
+	}
+
+	.system-monitoring__grid {
+		grid-template-columns: 1fr;
+	}
+}

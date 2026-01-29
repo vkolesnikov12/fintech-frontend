@@ -1,0 +1,80 @@
+.job-management {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.job-management__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 16px;
+}
+
+.job-management__filters {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.job-management__filters .ant-select {
+	min-width: 200px;
+}
+
+.job-management__grid {
+	display: grid;
+	grid-template-columns: minmax(320px, 2fr) minmax(260px, 1fr);
+	gap: 16px;
+}
+
+.job-management__table,
+.job-management__panel {
+	background: #ffffff;
+	border-radius: 16px;
+	padding: 16px 20px;
+	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+}
+
+.job-management__actions {
+	display: flex;
+	gap: 8px;
+}
+
+.job-management__history,
+.job-management__logs {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-top: 12px;
+}
+
+.job-management__history-item,
+.job-management__log-item {
+	background: #f8fafc;
+	border-radius: 12px;
+	padding: 12px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 12px;
+}
+
+.job-management__history-title {
+	font-weight: 600;
+	color: #1f2b35;
+}
+
+.job-management__table .ant-table-thead > tr > th {
+	background: #f8fafc;
+	font-weight: 600;
+}
+
+.job-management__table .ant-table {
+	background: transparent;
+}
+
+@media (max-width: 1100px) {
+	.job-management__grid {
+		grid-template-columns: 1fr;
+	}
+}

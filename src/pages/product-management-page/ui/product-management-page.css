@@ -1,0 +1,89 @@
+.product-management {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.product-management__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 16px;
+}
+
+.product-management__filters {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.product-management__filters .ant-select,
+.product-management__filters .ant-input {
+	min-width: 200px;
+}
+
+.product-management__grid {
+	display: grid;
+	grid-template-columns: minmax(320px, 2fr) minmax(260px, 1fr);
+	gap: 16px;
+}
+
+.product-management__table,
+.product-management__audit {
+	background: #ffffff;
+	border-radius: 16px;
+	padding: 16px 20px;
+	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+}
+
+.product-management__section-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 12px;
+}
+
+.product-management__section-header .ant-btn-link {
+	padding: 0;
+	color: #1b4c63;
+	font-weight: 500;
+}
+
+.product-management__audit-list {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.product-management__audit-item {
+	background: #f8fafc;
+	border-radius: 12px;
+	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.product-management__audit-title {
+	font-weight: 600;
+	color: #1f2b35;
+}
+
+.product-management__table .ant-table-thead > tr > th {
+	background: #f8fafc;
+	font-weight: 600;
+}
+
+.product-management__table .ant-table {
+	background: transparent;
+}
+
+.product-management__table .ant-btn {
+	border-radius: 10px;
+}
+
+@media (max-width: 1100px) {
+	.product-management__grid {
+		grid-template-columns: 1fr;
+	}
+}

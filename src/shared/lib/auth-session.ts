@@ -17,8 +17,18 @@ const MOCK_USER: User = {
 	active: true,
 }
 
-const isMockAuthEnabled = () =>
+export const isMockAuthEnabled = () =>
 	import.meta.env.VITE_MOCK_AUTH === 'true'
+
+export const getForcedRole = (): UserRole | null => {
+	const role = import.meta.env.VITE_FORCE_ROLE
+
+	if (role === 'CLIENT' || role === 'MANAGER' || role === 'ADMIN') {
+		return role
+	}
+
+	return null
+}
 
 export const getSessionUser = (): User | null => {
 	const stored = localStorage.getItem(USER_KEY)
@@ -58,6 +68,12 @@ export const clearSessionUser = () => {
 }
 
 export const getUserRole = (): UserRole | null => {
+	const forcedRole = getForcedRole()
+
+	if (forcedRole) {
+		return forcedRole
+	}
+
 	const user = getSessionUser()
 
 	return user?.role ?? null
@@ -76,6 +92,11 @@ export const ensureMockSession = () => {
 	}
 
 	if (!getSessionUser()) {
-		setSessionUser(MOCK_USER)
+		const forcedRole = getForcedRole()
+		const mockUser = forcedRole
+			? { ...MOCK_USER, role: forcedRole }
+			: MOCK_USER
+
+		setSessionUser(mockUser)
 	}
 }
