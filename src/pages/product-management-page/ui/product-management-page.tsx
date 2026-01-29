@@ -16,53 +16,17 @@ import {
 } from '@ant-design/icons'
 import { useState } from 'react'
 import { CreateProductModal } from '../../../features/product/ui/create-product-modal'
+import { mockProducts } from '../../../shared/lib/mock-products'
 import './product-management-page.css'
 
 const { Title, Text } = Typography
 
-interface ProductRow {
-	key: string
-	name: string
-	code: string
-	type: 'CREDIT' | 'DEPOSIT' | 'INVESTMENT'
-	rate: string
-	currency: string
-	status: 'ACTIVE' | 'INACTIVE'
-	updatedAt: string
-}
+type ProductRow = (typeof mockProducts)[number] & { key: string }
 
-const products: ProductRow[] = [
-	{
-		key: '1',
-		name: 'Кредит наличными',
-		code: 'CRD-001',
-		type: 'CREDIT',
-		rate: '12.5%',
-		currency: 'RUB',
-		status: 'ACTIVE',
-		updatedAt: '19.01.2026',
-	},
-	{
-		key: '2',
-		name: 'Депозит «Надежный»',
-		code: 'DEP-008',
-		type: 'DEPOSIT',
-		rate: '8.2%',
-		currency: 'RUB',
-		status: 'ACTIVE',
-		updatedAt: '15.01.2026',
-	},
-	{
-		key: '3',
-		name: 'Инвестиционный пакет',
-		code: 'INV-010',
-		type: 'INVESTMENT',
-		rate: '10.1%',
-		currency: 'USD',
-		status: 'INACTIVE',
-		updatedAt: '10.01.2026',
-	},
-]
+const products: ProductRow[] = mockProducts.map((item) => ({
+	...item,
+	key: String(item.id),
+}))
 
 const auditHistory = [
 	{

@@ -30,10 +30,12 @@
 
 .product-management__table,
 .product-management__audit {
-	background: #ffffff;
+	background: var(--glass-bg);
+	border: 1px solid var(--glass-border);
 	border-radius: 16px;
 	padding: 16px 20px;
-	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+	box-shadow: var(--glass-shadow);
+	backdrop-filter: blur(16px);
 }
 
 .product-management__section-header {
@@ -45,7 +47,7 @@
 
 .product-management__section-header .ant-btn-link {
 	padding: 0;
-	color: #1b4c63;
+	color: var(--ink);
 	font-weight: 500;
 }
 
@@ -56,21 +58,24 @@
 }
 
 .product-management__audit-item {
-	background: #f8fafc;
+	background: var(--glass-bg);
+	border: 1px solid var(--glass-border);
 	border-radius: 12px;
 	padding: 12px;
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
+	box-shadow: var(--glass-shadow);
+	backdrop-filter: blur(12px);
 }
 
 .product-management__audit-title {
 	font-weight: 600;
-	color: #1f2b35;
+	color: var(--ink);
 }
 
 .product-management__table .ant-table-thead > tr > th {
-	background: #f8fafc;
+	background: var(--glass-bg);
 	font-weight: 600;
 }
 

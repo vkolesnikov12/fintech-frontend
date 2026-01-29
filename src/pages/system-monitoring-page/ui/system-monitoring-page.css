@@ -18,7 +18,10 @@
 
 .system-monitoring__service-card {
 	border-radius: 16px;
-	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+	background: var(--glass-bg);
+	border: 1px solid var(--glass-border);
+	box-shadow: var(--glass-shadow);
+	backdrop-filter: blur(16px);
 }
 
 .system-monitoring__metrics {
@@ -29,7 +32,10 @@
 
 .system-monitoring__metric-card {
 	border-radius: 16px;
-	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+	background: var(--glass-bg);
+	border: 1px solid var(--glass-border);
+	box-shadow: var(--glass-shadow);
+	backdrop-filter: blur(16px);
 }
 
 .system-monitoring__grid {
@@ -39,16 +45,18 @@
 }
 
 .system-monitoring__panel {
-	background: #ffffff;
+	background: var(--glass-bg);
+	border: 1px solid var(--glass-border);
 	border-radius: 16px;
 	padding: 16px 20px;
-	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+	box-shadow: var(--glass-shadow);
+	backdrop-filter: blur(16px);
 }
 
 .system-monitoring__chart {
 	height: 220px;
 	border-radius: 12px;
-	background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+	background: rgba(255, 255, 255, 0.8);
 }
 
 .system-monitoring__alerts {
@@ -59,16 +67,19 @@
 }
 
 .system-monitoring__alert {
-	background: #f8fafc;
+	background: var(--glass-bg);
+	border: 1px solid var(--glass-border);
 	border-radius: 12px;
 	padding: 12px;
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
+	box-shadow: var(--glass-shadow);
+	backdrop-filter: blur(12px);
 }
 
 .system-monitoring__panel .ant-table-thead > tr > th {
-	background: #f8fafc;
+	background: var(--glass-bg);
 	font-weight: 600;
 }
 

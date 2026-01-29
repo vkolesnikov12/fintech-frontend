@@ -1,9 +1,6 @@
-import {
-	ArrowDownOutlined,
-	FileTextOutlined,
-	QrcodeOutlined,
-} from '@ant-design/icons'
+import { ArrowRightOutlined } from '@ant-design/icons'
 import { Button, Tag, Typography } from 'antd'
+import { Link } from 'react-router-dom'
 import './dashboard-page.css'
 
 const { Text } = Typography
@@ -80,9 +77,9 @@ export function DashboardPage() {
 	return (
 		<div className='dashboard'>
 			<div className='dashboard__actions'>
-				<Button icon={<ArrowDownOutlined />}>Перевод</Button>
-				<Button icon={<FileTextOutlined />}>Скачать заявление</Button>
-				<Button icon={<QrcodeOutlined />}>QR - оплата</Button>
+				<Link to='/app/transfers' className='dashboard__action-link'>
+					<Button icon={<ArrowRightOutlined />}>Перевод</Button>
+				</Link>
 			</div>
 
 			<div className='dashboard__cards'>
@@ -101,19 +98,10 @@ export function DashboardPage() {
 						<span className='dashboard-card__avatar'>Ос</span>
 						<span className='dashboard-card__avatar'>Сч</span>
 						<span className='dashboard-card__avatar'>Пут</span>
-						<Text className='dashboard-card__link'>Посмотреть все</Text>
+						<Link className='dashboard-card__link' to='/app/accounts'>
+							Посмотреть все
+						</Link>
 					</div>
-				</div>
-				<div className='dashboard-card dashboard-card--accent'>
-					<Text type='secondary'>Активное приложение</Text>
-					<div className='dashboard-card__amount'>
-						Рефинансирование ипотеки
-					</div>
-					<div className='dashboard-card__status'>
-						<span>ОЖИДАЕТ УТВЕРЖДЕНИЯ</span>
-						<Text type='secondary'>Обновлено 2 часа назад</Text>
-					</div>
-					<div className='dashboard-card__progress' />
 				</div>
 			</div>
 
@@ -121,7 +109,9 @@ export function DashboardPage() {
 				<div className='dashboard-panel'>
 					<div className='dashboard-panel__header'>
 						<span>Последние транзакции</span>
-						<Button type='link'>Вся история</Button>
+						<Link className='dashboard-panel__link' to='/app/accounts'>
+							Вся история
+						</Link>
 					</div>
 					<div className='dashboard-table'>
 						<div
@@ -153,10 +143,12 @@ export function DashboardPage() {
 						))}
 					</div>
 				</div>
-				<div className='dashboard-panel dashboard-panel--compact'>
+				<div className='dashboard-panel dashboard-panel--wide'>
 					<div className='dashboard-panel__header'>
 						<span>Уведомления</span>
-						<Button type='link'>Вся история</Button>
+						<Link className='dashboard-panel__link' to='/app/notifications'>
+							Вся история
+						</Link>
 					</div>
 					<div className='dashboard-notifications'>
 						{notifications.map((item) => {

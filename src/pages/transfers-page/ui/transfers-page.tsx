@@ -66,7 +66,15 @@ export function TransfersPage() {
 	const [messageApi, contextHolder] = message.useMessage()
 
 	const handleSubmit = () => {
-		messageApi.success('Перевод отправлен (mock)')
+		messageApi.success('POST /api/v1/accounts/transfer (mock)')
+	}
+
+	const handleOpenHistory = () => {
+		messageApi.info('GET /api/v1/accounts/{id}/statement (mock)')
+	}
+
+	const handleOpenTemplates = () => {
+		messageApi.info('GET /api/v1/transfers/templates (mock)')
 	}
 
 	return (
@@ -304,7 +312,9 @@ export function TransfersPage() {
 					<div className='transfers__history'>
 						<div className='transfers__section-header'>
 							<Title level={5}>История переводов</Title>
-							<Button type='link'>Вся история</Button>
+							<Button type='link' onClick={handleOpenHistory}>
+								Вся история
+							</Button>
 						</div>
 						<Space direction='vertical' size={12} className='transfers__list'>
 							{transferHistory.map((item) => (
@@ -331,7 +341,9 @@ export function TransfersPage() {
 					<div className='transfers__templates'>
 						<div className='transfers__section-header'>
 							<Title level={5}>Шаблоны</Title>
-							<Button type='link'>Все шаблоны</Button>
+							<Button type='link' onClick={handleOpenTemplates}>
+								Все шаблоны
+							</Button>
 						</div>
 						<Space direction='vertical' size={10} className='transfers__list'>
 							{templates.map((item) => (

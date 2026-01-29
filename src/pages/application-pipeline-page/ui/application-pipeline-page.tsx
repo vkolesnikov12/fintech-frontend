@@ -2,6 +2,10 @@ import { Button, Checkbox, Input, Select, Typography, message } from 'antd'
 import type { CheckboxChangeEvent } from 'antd/es/checkbox'
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import {
+	useBulkStatusMutation,
+	useLazyGetManagerApplicationsQuery,
+} from '../../../features/manager/api/manager-api'
 import './application-pipeline-page.css'
 
 const { Title, Text } = Typography
@@ -98,13 +102,22 @@ export function ApplicationPipelinePage() {
 	const [messageApi, contextHolder] = message.useMessage()
 	const [columns, setColumns] = useState(initialColumns)
 	const [selectedIds, setSelectedIds] = useState<string[]>([])
+	const [statusFilter, setStatusFilter] = useState<PipelineStatus | undefined>(
+		undefined,
+	)
+	const [productFilter, setProductFilter] = useState<string | undefined>(
+		undefined,
+	)
+	const [searchQuery, setSearchQuery] = useState('')
+	const [sortBy, setSortBy] = useState<'newest' | 'amount'>('newest')
 	const [draggedItem, setDraggedItem] = useState<{
 		id: string
 		from: PipelineStatus
 	} | null>(null)
+	const [loadApplications] = useLazyGetManagerApplicationsQuery()
+	const [bulkStatus] = useBulkStatusMutation()
 
 	const selectedCount = selectedIds.length
-	const isBulkDisabled = selectedCount === 0
 
 	const allIds = useMemo(
 		() =>
@@ -123,21 +136,40 @@ export function ApplicationPipelinePage() {
 		setSelectedIds(allIds)
 	}
 
-	const handleSelectCard = (event: CheckboxChangeEvent) => {
-		const target = event.target as HTMLInputElement
-		const id = target.dataset.id
-
-		if (!id) {
-			return
+	const handleSelectCard = (id: string) =>
+		(event: CheckboxChangeEvent) => {
+			setSelectedIds((prev) =>
+				event.target.checked
+					? [...prev, id]
+					: prev.filter((item) => item !== id),
+			)
 		}
-
-		setSelectedIds((prev) =>
-			event.target.checked ? [...prev, id] : prev.filter((item) => item !== id),
-		)
 	}
 
 	const handleBulkAction = (action: string) => {
-		messageApi.success(`Массовое действие: ${action} (${selectedCount})`)
+		if (!selectedCount) {
+			messageApi.info('Выберите заявки для массового действия')
+			return
+		}
+
+		bulkStatus({
+			ids: selectedIds,
+			action:
+				action === 'Назначить'
+					? 'ASSIGN'
+					: action === 'Одобрить'
+						? 'APPROVE'
+						: 'REJECT',
+		})
+			.unwrap()
+			.then(() => {
+				messageApi.success(
+					`POST /api/v1/manager/applications/bulk-status: ${action}`,
+				)
+			})
+			.catch(() => {
+				messageApi.error('Не удалось выполнить массовое действие')
+			})
 	}
 
 	const handleDragStart = (event: React.DragEvent<HTMLDivElement>) => {
@@ -184,6 +216,71 @@ export function ApplicationPipelinePage() {
 		setDraggedItem(null)
 	}
 
+	const filteredColumns = useMemo(() => {
+		const query = searchQuery.trim().toLowerCase()
+		const amountToNumber = (amount: string) =>
+			Number(amount.replace(/[^\d]/g, ''))
+
+		return columnsOrder.reduce<Record<PipelineStatus, PipelineCard[]>>(
+			(result, status) => {
+				const baseList = columns[status].filter((card) => {
+					if (statusFilter && status !== statusFilter) {
+						return false
+					}
+
+					if (productFilter && card.product !== productFilter) {
+						return false
+					}
+
+					if (!query) {
+						return true
+					}
+
+					return (
+						card.title.toLowerCase().includes(query) ||
+						card.client.toLowerCase().includes(query)
+					)
+				})
+
+				const sortedList = [...baseList].sort((a, b) => {
+					if (sortBy === 'amount') {
+						return amountToNumber(b.amount) - amountToNumber(a.amount)
+					}
+
+					return b.createdAt.localeCompare(a.createdAt)
+				})
+
+				result[status] = sortedList
+				return result
+			},
+			{
+				NEW: [],
+				PROCESSING: [],
+				DOCUMENTS: [],
+				APPROVED: [],
+				REJECTED: [],
+			},
+		)
+	}, [columns, productFilter, searchQuery, sortBy, statusFilter])
+
+	const handleFiltersApply = () => {
+		const sort =
+			sortBy === 'amount' ? 'amount,desc' : 'createdAt,desc'
+		loadApplications({
+			status: statusFilter,
+			product: productFilter,
+			search: searchQuery.trim() || undefined,
+			sort,
+		})
+			.unwrap()
+			.then(() => {
+				messageApi.success('GET /api/v1/manager/applications (mock)')
+			})
+			.catch(() => {
+				messageApi.error('Не удалось загрузить заявки')
+			})
+	}
+
 	return (
 		<div className='application-pipeline'>
 			{contextHolder}
@@ -199,19 +296,16 @@ export function ApplicationPipelinePage() {
 						{selectedIds.length === allIds.length ? 'Снять выбор' : 'Выбрать все'}
 					</Button>
 					<Button
-						disabled={isBulkDisabled}
 						onClick={() => handleBulkAction('Назначить')}
 					>
 						Назначить
 					</Button>
 					<Button
-						disabled={isBulkDisabled}
 						onClick={() => handleBulkAction('Одобрить')}
 					>
 						Одобрить
 					</Button>
 					<Button
-						disabled={isBulkDisabled}
 						onClick={() => handleBulkAction('Отклонить')}
 					>
 						Отклонить
@@ -222,6 +316,9 @@ export function ApplicationPipelinePage() {
 			<div className='application-pipeline__filters'>
 				<Select
 					placeholder='Статус'
+					value={statusFilter}
+					onChange={(value) => setStatusFilter(value)}
+					allowClear
 					options={columnsOrder.map((status) => ({
 						value: status,
 						label: columnLabels[status],
@@ -229,13 +326,30 @@ export function ApplicationPipelinePage() {
 				/>
 				<Select
 					placeholder='Продукт'
+					value={productFilter}
+					onChange={(value) => setProductFilter(value)}
+					allowClear
 					options={[
-						{ value: 'credit', label: 'Кредит' },
-						{ value: 'deposit', label: 'Депозит' },
-						{ value: 'mortgage', label: 'Ипотека' },
+						{ value: 'Кредит', label: 'Кредит' },
+						{ value: 'Депозит', label: 'Депозит' },
+						{ value: 'Ипотека', label: 'Ипотека' },
 					]}
 				/>
-				<Input placeholder='Поиск по заявкам' />
+				<Select
+					placeholder='Сортировка'
+					value={sortBy}
+					onChange={(value) => setSortBy(value)}
+					options={[
+						{ value: 'newest', label: 'Сначала новые' },
+						{ value: 'amount', label: 'По сумме' },
+					]}
+				/>
+				<Input
+					placeholder='Поиск по заявкам'
+					value={searchQuery}
+					onChange={(event) => setSearchQuery(event.target.value)}
+				/>
+				<Button onClick={handleFiltersApply}>Поиск</Button>
 			</div>
 
 			<div className='application-pipeline__board'>
@@ -252,7 +366,7 @@ export function ApplicationPipelinePage() {
 							<Text type='secondary'>{columns[status].length}</Text>
 						</div>
 						<div className='application-pipeline__column-body'>
-							{columns[status].map((card) => (
+						{filteredColumns[status].map((card) => (
 								<div
 									key={card.id}
 									className='application-pipeline__card'
@@ -267,8 +381,7 @@ export function ApplicationPipelinePage() {
 										</div>
 										<Checkbox
 											checked={selectedIds.includes(card.id)}
-											data-id={card.id}
-											onChange={handleSelectCard}
+											onChange={handleSelectCard(card.id)}
 										/>
 									</div>
 									<Text type='secondary'>

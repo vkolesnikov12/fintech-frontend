@@ -7,6 +7,7 @@ import { DashboardPage } from './pages/dashboard-page'
 import { DocumentsPage } from './pages/documents-page'
 import { LoginPage } from './pages/login-page'
 import { LoanPaymentsPage } from './pages/loan-payments-page'
+import { NotificationsPage } from './pages/notifications-page'
 import { ProfileSettingsPage } from './pages/profile-settings-page'
 import { RegisterPage } from './pages/register-page'
 import { StubPage } from './pages/stub-page'
@@ -39,6 +40,7 @@ function App() {
 					<Route path='documents' element={<DocumentsPage />} />
 					<Route path='applications' element={<ApplicationsPage />} />
 					<Route path='loan-payments' element={<LoanPaymentsPage />} />
+					<Route path='notifications' element={<NotificationsPage />} />
 					<Route
 						path='profile'
 						element={<Navigate to='/app/profile-settings' replace />}

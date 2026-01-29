@@ -3,6 +3,7 @@ import {
 	Progress,
 	Tag,
 	Typography,
+	message,
 } from 'antd'
 import {
 	BarChartOutlined,
@@ -10,6 +11,12 @@ import {
 	TeamOutlined,
 	UnorderedListOutlined,
 } from '@ant-design/icons'
+import {
+	useAssignApplicationMutation,
+	useLazyGetDailyReportQuery,
+	useLazyGetManagerApplicationsQuery,
+	useLazyGetTeamActivityQuery,
+} from '../../../features/manager/api/manager-api'
 import './manager-dashboard-page.css'
 
 const { Title, Text } = Typography
@@ -94,14 +101,61 @@ const teamActivity = [
 ]
 
 export function ManagerDashboardPage() {
+	const [messageApi, contextHolder] = message.useMessage()
+	const [getDailyReport] = useLazyGetDailyReportQuery()
+	const [getTeamActivity] = useLazyGetTeamActivityQuery()
+	const [getManagerApplications] = useLazyGetManagerApplicationsQuery()
+	const [assignApplication] = useAssignApplicationMutation()
+
+	const handleDailyReport = () => {
+		getDailyReport()
+			.unwrap()
+			.then(() => messageApi.success('GET /api/v1/reports/daily (mock)'))
+			.catch(() => messageApi.error('Не удалось загрузить отчет'))
+	}
+
+	const handleAllApplications = () => {
+		getManagerApplications({ assigned: false })
+			.unwrap()
+			.then(() =>
+				messageApi.info(
+					'GET /api/v1/manager/applications?assigned=false (mock)',
+				),
+			)
+			.catch(() => messageApi.error('Не удалось загрузить заявки'))
+	}
+
+	const handleAssign = (applicationId: number) => {
+		assignApplication({ id: String(applicationId), managerId: 1 })
+			.unwrap()
+			.then(() =>
+				messageApi.success(
+					`PATCH /api/v1/manager/applications/${applicationId}/assign (mock)`,
+				),
+			)
+			.catch(() => messageApi.error('Не удалось назначить заявку'))
+	}
+
+	const handleTeamReport = () => {
+		getTeamActivity()
+			.unwrap()
+			.then(() =>
+				messageApi.info('GET /api/v1/analytics/team/activity (mock)'),
+			)
+			.catch(() => messageApi.error('Не удалось загрузить отчет'))
+	}
+
 	return (
 		<div className='manager-dashboard'>
+			{contextHolder}
 			<div className='manager-dashboard__header'>
 				<div>
 					<Title level={3}>Панель менеджера</Title>
 					<Text type='secondary'>Метрики и активность команды</Text>
 				</div>
-				<Button type='primary'>Отчет за день</Button>
+				<Button type='primary' onClick={handleDailyReport}>
+					Отчет за день
+				</Button>
 			</div>
 
 			<div className='manager-dashboard__metrics'>
@@ -142,7 +196,9 @@ export function ManagerDashboardPage() {
 				<div className='manager-dashboard__panel'>
 					<div className='manager-dashboard__section-header'>
 						<Title level={5}>Нераспределенные заявки</Title>
-						<Button type='link'>Все заявки</Button>
+						<Button type='link' onClick={handleAllApplications}>
+							Все заявки
+						</Button>
 					</div>
 					<div className='manager-dashboard__list'>
 						{unassigned.map((item) => (
@@ -157,7 +213,12 @@ export function ManagerDashboardPage() {
 								</div>
 								<div className='manager-dashboard__list-meta'>
 									<Text>{item.amount}</Text>
-									<Button size='small'>Назначить</Button>
+									<Button
+										size='small'
+										onClick={() => handleAssign(item.id)}
+									>
+										Назначить
+									</Button>
 								</div>
 							</div>
 						))}
@@ -167,7 +228,9 @@ export function ManagerDashboardPage() {
 				<div className='manager-dashboard__panel'>
 					<div className='manager-dashboard__section-header'>
 						<Title level={5}>Активность команды</Title>
-						<Button type='link'>Отчет</Button>
+						<Button type='link' onClick={handleTeamReport}>
+							Отчет
+						</Button>
 					</div>
 					<div className='manager-dashboard__team'>
 						{teamActivity.map((member) => (

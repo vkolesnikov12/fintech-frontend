@@ -1,6 +1,8 @@
 .stub {
-	background: #ffffff;
+	background: var(--glass-bg);
+	border: 1px solid var(--glass-border);
 	border-radius: 16px;
 	padding: 24px;
-	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+	box-shadow: var(--glass-shadow);
+	backdrop-filter: blur(16px);
 }

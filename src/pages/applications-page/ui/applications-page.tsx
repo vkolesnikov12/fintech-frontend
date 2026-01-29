@@ -1,6 +1,7 @@
 import {
 	Button,
 	Input,
+	Modal,
 	Progress,
 	Select,
 	Tag,
@@ -12,6 +13,8 @@ import {
 	UploadOutlined,
 	PlusOutlined,
 } from '@ant-design/icons'
+import { useMemo, useState } from 'react'
+import { mockProducts } from '../../../shared/lib/mock-products'
 import './applications-page.css'
 
 const { Title, Text } = Typography
@@ -45,9 +48,40 @@ const applications = [
 
 export function ApplicationsPage() {
 	const [messageApi, contextHolder] = message.useMessage()
+	const [statusFilter, setStatusFilter] = useState<string | undefined>(
+		undefined,
+	)
+	const [productFilter, setProductFilter] = useState<string | undefined>(
+		undefined,
+	)
+	const [searchQuery, setSearchQuery] = useState('')
+	const [isModalOpen, setIsModalOpen] = useState(false)
+
+	const filteredApplications = useMemo(() => {
+		const query = searchQuery.trim().toLowerCase()
+
+		return applications.filter((item) => {
+			if (statusFilter && item.status !== statusFilter) {
+				return false
+			}
+
+			if (
+				productFilter &&
+				!item.title.toLowerCase().includes(productFilter)
+			) {
+				return false
+			}
+
+			if (!query) {
+				return true
+			}
+
+			return item.title.toLowerCase().includes(query)
+		})
+	}, [productFilter, searchQuery, statusFilter])
 
 	const handleUpload = () => {
-		messageApi.success('Документ загружен (mock)')
+		messageApi.success('POST /api/v1/documents/upload (mock)')
 		return false
 	}
 
@@ -61,7 +95,11 @@ export function ApplicationsPage() {
 						Просмотр статуса заявок и загрузка документов
 					</Text>
 				</div>
-				<Button type='primary' icon={<PlusOutlined />}>
+				<Button
+					type='primary'
+					icon={<PlusOutlined />}
+					onClick={() => setIsModalOpen(true)}
+				>
 					Подать новую
 				</Button>
 			</div>
@@ -69,6 +107,9 @@ export function ApplicationsPage() {
 			<div className='applications__filters'>
 				<Select
 					placeholder='Статус'
+					value={statusFilter}
+					onChange={(value) => setStatusFilter(value)}
+					allowClear
 					options={[
 						{ value: 'NEW', label: 'Новая' },
 						{ value: 'PROCESSING', label: 'В обработке' },
@@ -78,17 +119,24 @@ export function ApplicationsPage() {
 				/>
 				<Select
 					placeholder='Продукт'
+					value={productFilter}
+					onChange={(value) => setProductFilter(value)}
+					allowClear
 					options={[
-						{ value: 'credit', label: 'Кредит' },
-						{ value: 'deposit', label: 'Депозит' },
-						{ value: 'mortgage', label: 'Ипотека' },
+						{ value: 'кредит', label: 'Кредит' },
+						{ value: 'депозит', label: 'Депозит' },
+						{ value: 'ипотека', label: 'Ипотека' },
 					]}
 				/>
-				<Input placeholder='Поиск по заявкам' />
+				<Input
+					placeholder='Поиск по заявкам'
+					value={searchQuery}
+					onChange={(event) => setSearchQuery(event.target.value)}
+				/>
 			</div>
 
 			<div className='applications__grid'>
-				{applications.map((item) => (
+				{filteredApplications.map((item) => (
 					<div key={item.id} className='applications__card'>
 						<div className='applications__card-header'>
 							<div>
@@ -123,11 +171,51 @@ export function ApplicationsPage() {
 									Загрузить документ
 								</Button>
 							</Upload>
-							<Button type='link'>Отменить</Button>
+							<Button
+								type='link'
+								onClick={() =>
+									messageApi.success(
+										`PATCH /api/v1/applications/${item.id}/cancel (mock)`,
+									)
+								}
+							>
+								Отменить
+							</Button>
 						</div>
 					</div>
 				))}
 			</div>
+			<Modal
+				open={isModalOpen}
+				title='Новая заявка'
+				onCancel={() => setIsModalOpen(false)}
+				onOk={() => {
+					messageApi.success('POST /api/v1/applications (mock)')
+					setIsModalOpen(false)
+				}}
+				okText='Подать'
+				cancelText='Отмена'
+			>
+				<div className='applications__modal'>
+					<Select
+						placeholder='Продукт'
+						options={mockProducts.map((product) => ({
+							value: product.id,
+							label: product.name,
+						}))}
+					/>
+					<Input placeholder='Сумма' />
+					<Input placeholder='Срок (мес)' />
+					<Select
+						placeholder='Валюта'
+						options={[
+							{ value: 'RUB', label: 'RUB' },
+							{ value: 'USD', label: 'USD' },
+							{ value: 'EUR', label: 'EUR' },
+						]}
+					/>
+				</div>
+			</Modal>
 		</div>
 	)
 }

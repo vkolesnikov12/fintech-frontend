@@ -1,5 +1,6 @@
 import {
 	Button,
+	Input,
 	Select,
 	Table,
 	Tag,
@@ -7,6 +8,7 @@ import {
 	Upload,
 	message,
 } from 'antd'
+import { useMemo, useState } from 'react'
 import type { ColumnsType } from 'antd/es/table'
 import {
 	DeleteOutlined,
@@ -58,6 +60,31 @@ const documents: DocumentRow[] = [
 
 export function DocumentsPage() {
 	const [messageApi, contextHolder] = message.useMessage()
+	const [typeFilter, setTypeFilter] = useState<string | undefined>(undefined)
+	const [statusFilter, setStatusFilter] = useState<string | undefined>(
+		undefined,
+	)
+	const [searchQuery, setSearchQuery] = useState('')
+
+	const filteredDocuments = useMemo(() => {
+		const query = searchQuery.trim().toLowerCase()
+
+		return documents.filter((doc) => {
+			if (typeFilter && doc.type !== typeFilter) {
+				return false
+			}
+
+			if (statusFilter && doc.status !== statusFilter) {
+				return false
+			}
+
+			if (!query) {
+				return true
+			}
+
+			return doc.name.toLowerCase().includes(query)
+		})
+	}, [searchQuery, statusFilter, typeFilter])
 
 	const columns: ColumnsType<DocumentRow> = [
 		{
@@ -91,12 +118,29 @@ export function DocumentsPage() {
 		{
 			title: 'Действие',
 			key: 'action',
-			render: () => (
+			render: (_, record) => (
 				<div className='documents__actions'>
-					<Button type='link' icon={<DownloadOutlined />}>
+					<Button
+						type='link'
+						icon={<DownloadOutlined />}
+						onClick={() =>
+							messageApi.success(
+								`GET /api/v1/documents/${record.key}/download (mock)`,
+							)
+						}
+					>
 						Скачать
 					</Button>
-					<Button type='link' danger icon={<DeleteOutlined />}>
+					<Button
+						type='link'
+						danger
+						icon={<DeleteOutlined />}
+						onClick={() =>
+							messageApi.success(
+								`DELETE /api/v1/documents/${record.key} (mock)`,
+							)
+						}
+					>
 						Удалить
 					</Button>
 				</div>
@@ -117,7 +161,7 @@ export function DocumentsPage() {
 				<Upload
 					showUploadList={false}
 					beforeUpload={() => {
-						messageApi.success('Файл загружен (mock)')
+					messageApi.success('POST /api/v1/documents/upload (mock)')
 						return false
 					}}
 				>
@@ -128,16 +172,27 @@ export function DocumentsPage() {
 			</div>
 
 			<div className='documents__filters'>
+				<Input
+					placeholder='Поиск по названию'
+					value={searchQuery}
+					onChange={(event) => setSearchQuery(event.target.value)}
+				/>
 				<Select
 					placeholder='Тип'
+					value={typeFilter}
+					onChange={(value) => setTypeFilter(value)}
+					allowClear
 					options={[
-						{ value: 'statement', label: 'Выписка' },
-						{ value: 'certificate', label: 'Справка' },
-						{ value: 'agreement', label: 'Договор' },
+						{ value: 'Выписка', label: 'Выписка' },
+						{ value: 'Справка', label: 'Справка' },
+						{ value: 'Договор', label: 'Договор' },
 					]}
 				/>
 				<Select
 					placeholder='Статус'
+					value={statusFilter}
+					onChange={(value) => setStatusFilter(value)}
+					allowClear
 					options={[
 						{ value: 'READY', label: 'Готов' },
 						{ value: 'PROCESSING', label: 'В обработке' },
@@ -149,7 +204,7 @@ export function DocumentsPage() {
 			<div className='documents__table'>
 				<Table
 					columns={columns}
-					dataSource={documents}
+					dataSource={filteredDocuments}
 					pagination={false}
 				/>
 			</div>

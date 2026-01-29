@@ -13,6 +13,14 @@ import {
 	EyeOutlined,
 	SendOutlined,
 } from '@ant-design/icons'
+import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
+import {
+	useLazyDownloadDocumentQuery,
+	useLazySearchDocumentsQuery,
+	useSendNotificationMutation,
+	useUpdateDocumentStatusMutation,
+} from '../../../features/document-flow/api/document-flow-api'
 import './document-flow-page.css'
 
 const { Title, Text } = Typography
@@ -70,6 +78,94 @@ const reviewHistory = [
 
 export function DocumentFlowPage() {
 	const [messageApi, contextHolder] = message.useMessage()
+	const [searchClient, setSearchClient] = useState('')
+	const [searchApplication, setSearchApplication] = useState('')
+	const [selectedDocument, setSelectedDocument] = useState<DocumentRow | null>(
+		null,
+	)
+	const [searchDocuments] = useLazySearchDocumentsQuery()
+	const [downloadDocument] = useLazyDownloadDocumentQuery()
+	const [updateDocumentStatus] = useUpdateDocumentStatusMutation()
+	const [sendNotification] = useSendNotificationMutation()
+
+	const filteredDocuments = useMemo(() => {
+		const clientQuery = searchClient.trim().toLowerCase()
+		const appQuery = searchApplication.trim().toLowerCase()
+
+		return documents.filter((item) => {
+			if (clientQuery && !item.client.toLowerCase().includes(clientQuery)) {
+				return false
+			}
+
+			if (appQuery && !item.application.toLowerCase().includes(appQuery)) {
+				return false
+			}
+
+			return true
+		})
+	}, [searchApplication, searchClient])
+
+	const handleSearch = () => {
+		searchDocuments({
+			status: 'UPLOADED',
+			client: searchClient.trim() || undefined,
+			application: searchApplication.trim() || undefined,
+		})
+			.unwrap()
+			.then(() => {
+				messageApi.success('GET /api/v1/documents/search (mock)')
+			})
+			.catch(() => {
+				messageApi.error('Не удалось загрузить документы')
+			})
+	}
+
+	const handleHistory = () => {
+		searchDocuments({ status: 'UPLOADED' })
+			.unwrap()
+			.then(() => {
+				messageApi.info('GET /api/v1/documents/search?status=UPLOADED (mock)')
+			})
+			.catch(() => {
+				messageApi.error('Не удалось загрузить историю')
+			})
+	}
+
+	const handlePreview = (record: DocumentRow) => {
+		setSelectedDocument(record)
+		downloadDocument({ id: record.key })
+			.unwrap()
+			.then(() => {
+				messageApi.success(`GET /api/v1/documents/${record.key}/download (mock)`)
+			})
+			.catch(() => {
+				messageApi.error('Не удалось загрузить документ')
+			})
+	}
+
+	const handleDocumentAction = (status: 'APPROVED' | 'REJECTED' | 'REQUESTED') => {
+		if (!selectedDocument) {
+			messageApi.info('Выберите документ для действия')
+			return
+		}
+
+		updateDocumentStatus({ id: selectedDocument.key, status })
+			.unwrap()
+			.then(() =>
+				sendNotification({
+					applicationId: Number(selectedDocument.application.replace('#', '')),
+					message: `Статус документа: ${status}`,
+				}).unwrap(),
+			)
+			.then(() => {
+				messageApi.success(
+					`PATCH /api/v1/documents/${selectedDocument.key}/status (mock)`,
+				)
+			})
+			.catch(() => {
+				messageApi.error('Не удалось обновить статус документа')
+			})
+	}
 
 	const columns: ColumnsType<DocumentRow> = [
 		{ title: 'Клиент', dataIndex: 'client', key: 'client' },
@@ -85,9 +181,11 @@ export function DocumentFlowPage() {
 		{
 			title: 'Действие',
 			key: 'action',
-			render: () => (
+			render: (_, record) => (
 				<div className='document-flow__actions'>
-					<Button icon={<EyeOutlined />}>Просмотр</Button>
+					<Button icon={<EyeOutlined />} onClick={() => handlePreview(record)}>
+						Просмотр
+					</Button>
 				</div>
 			),
 		},
@@ -102,26 +200,48 @@ export function DocumentFlowPage() {
 					<Text type='secondary'>Проверка загруженных документов</Text>
 				</div>
 				<div className='document-flow__header-actions'>
-					<Button icon={<CheckCircleOutlined />}>
+					<Button
+						icon={<CheckCircleOutlined />}
+						onClick={() => handleDocumentAction('APPROVED')}
+					>
 						Принять
 					</Button>
-					<Button icon={<CloseCircleOutlined />}>
+					<Button
+						icon={<CloseCircleOutlined />}
+						onClick={() => handleDocumentAction('REJECTED')}
+					>
 						Отклонить
 					</Button>
-					<Button icon={<SendOutlined />}>
+					<Button
+						icon={<SendOutlined />}
+						onClick={() => handleDocumentAction('REQUESTED')}
+					>
 						Запросить
 					</Button>
 				</div>
 			</div>
 
 			<div className='document-flow__filters'>
-				<Input placeholder='Поиск по клиенту' />
-				<Input placeholder='Поиск по заявке' />
+				<Input
+					placeholder='Поиск по клиенту'
+					value={searchClient}
+					onChange={(event) => setSearchClient(event.target.value)}
+				/>
+				<Input
+					placeholder='Поиск по заявке'
+					value={searchApplication}
+					onChange={(event) => setSearchApplication(event.target.value)}
+				/>
+				<Button onClick={handleSearch}>Поиск</Button>
 			</div>
 
 			<div className='document-flow__grid'>
 				<div className='document-flow__table'>
-					<Table columns={columns} dataSource={documents} pagination={false} />
+					<Table
+						columns={columns}
+						dataSource={filteredDocuments}
+						pagination={false}
+					/>
 				</div>
 				<div className='document-flow__side'>
 					<div className='document-flow__preview'>
@@ -129,15 +249,31 @@ export function DocumentFlowPage() {
 							<Title level={5}>Предпросмотр</Title>
 						</div>
 						<div className='document-flow__preview-box'>
-							<Text type='secondary'>
-								Выберите документ для просмотра
-							</Text>
+							{selectedDocument ? (
+								<div className='document-flow__preview-content'>
+									<Text>{selectedDocument.document}</Text>
+									<Text type='secondary'>
+										{selectedDocument.client} • {selectedDocument.application}
+									</Text>
+									<Link
+										to={`/app/applications/${selectedDocument.application.replace('#', '')}`}
+									>
+										<Button size='small'>Открыть заявку</Button>
+									</Link>
+								</div>
+							) : (
+								<Text type='secondary'>
+									Выберите документ для просмотра
+								</Text>
+							)}
 						</div>
 					</div>
 					<div className='document-flow__history'>
 						<div className='document-flow__section-header'>
 							<Title level={5}>История проверок</Title>
-							<Button type='link'>Вся история</Button>
+							<Button type='link' onClick={handleHistory}>
+								Вся история
+							</Button>
 						</div>
 						<div className='document-flow__history-list'>
 							{reviewHistory.map((item) => (

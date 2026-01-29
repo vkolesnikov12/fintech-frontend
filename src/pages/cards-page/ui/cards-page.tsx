@@ -1,12 +1,15 @@
 import {
 	Button,
 	InputNumber,
+	Modal,
+	Radio,
 	Select,
 	Switch,
 	Tag,
 	Typography,
 	message,
 } from 'antd'
+import { useState } from 'react'
 import './cards-page.css'
 
 const { Title, Text } = Typography
@@ -59,15 +62,62 @@ const operations = [
 	},
 ]
 
+const availableCardTypes = [
+	{
+		id: 'virtual',
+		name: 'Виртуальная карта',
+		description: 'Для онлайн‑покупок',
+	},
+	{
+		id: 'plastic',
+		name: 'Пластиковая карта',
+		description: 'Доставка на дом',
+	},
+	{
+		id: 'premium',
+		name: 'Премиальная карта',
+		description: 'Повышенные лимиты',
+	},
+]
+
 export function CardsPage() {
 	const [messageApi, contextHolder] = message.useMessage()
+	const [limitMode, setLimitMode] = useState('daily')
+	const [selectedCardId, setSelectedCardId] = useState(cards[0].id)
+	const [isNewCardOpen, setIsNewCardOpen] = useState(false)
+	const [selectedCardType, setSelectedCardType] = useState<string | undefined>(
+		undefined,
+	)
 
 	const handleToggle = () => {
-		messageApi.success('Статус карты обновлён (mock)')
+		messageApi.success(
+			`PATCH /api/v1/accounts/${selectedCardId}/status (mock)`,
+		)
 	}
 
 	const handleLimitSave = () => {
-		messageApi.success('Лимиты сохранены (mock)')
+		messageApi.success('POST /api/v1/accounts/{id}/limit (mock)')
+	}
+
+	const handleNewCard = () => {
+		messageApi.info('GET /api/v1/cards/types (mock)')
+		setIsNewCardOpen(true)
+	}
+
+	const handleOpenHistory = () => {
+		messageApi.info(
+			`GET /api/v1/accounts/${selectedCardId}/statement (mock)`,
+		)
+	}
+
+	const handleCreateCard = () => {
+		if (!selectedCardType) {
+			messageApi.error('Выберите тип карты')
+			return
+		}
+
+		messageApi.success('POST /api/v1/accounts (mock)')
+		setIsNewCardOpen(false)
 	}
 
 	return (
@@ -82,7 +132,9 @@ export function CardsPage() {
 				<div className='cards__list'>
 					<div className='cards__section-header'>
 						<Title level={5}>Список карт</Title>
-						<Button type='primary'>Новая карта</Button>
+						<Button type='primary' onClick={handleNewCard}>
+							Новая карта
+						</Button>
 					</div>
 					<div className='cards__items'>
 						{cards.map((card) => (
@@ -117,9 +169,20 @@ export function CardsPage() {
 							<Title level={5}>Управление лимитами</Title>
 						</div>
 						<div className='cards__limit-row'>
+							<Text type='secondary'>Тип лимита</Text>
+							<Radio.Group
+								value={limitMode}
+								onChange={(event) => setLimitMode(event.target.value)}
+							>
+								<Radio value='daily'>Дневной</Radio>
+								<Radio value='transaction'>На операцию</Radio>
+							</Radio.Group>
+						</div>
+						<div className='cards__limit-row'>
 							<Text type='secondary'>Карта</Text>
 							<Select
-								defaultValue={cards[0].id}
+								value={selectedCardId}
+								onChange={(value) => setSelectedCardId(value)}
 								options={cards.map((card) => ({
 									value: card.id,
 									label: `${card.title} ${card.number}`,
@@ -128,11 +191,21 @@ export function CardsPage() {
 						</div>
 						<div className='cards__limit-row'>
 							<Text type='secondary'>Лимит на день</Text>
-							<InputNumber min={0} defaultValue={50000} addonAfter='₽' />
+							<InputNumber
+								min={0}
+								defaultValue={50000}
+								addonAfter='₽'
+								disabled={limitMode !== 'daily'}
+							/>
 						</div>
 						<div className='cards__limit-row'>
 							<Text type='secondary'>Лимит на операции</Text>
-							<InputNumber min={0} defaultValue={20000} addonAfter='₽' />
+							<InputNumber
+								min={0}
+								defaultValue={20000}
+								addonAfter='₽'
+								disabled={limitMode !== 'transaction'}
+							/>
 						</div>
 						<Button type='primary' onClick={handleLimitSave} block>
 							Сохранить лимиты
@@ -142,7 +215,9 @@ export function CardsPage() {
 					<div className='cards__history'>
 						<div className='cards__section-header'>
 							<Title level={5}>История операций</Title>
-							<Button type='link'>Вся история</Button>
+							<Button type='link' onClick={handleOpenHistory}>
+								Вся история
+							</Button>
 						</div>
 						<div className='cards__history-list'>
 							{operations.map((item) => (
@@ -166,6 +241,37 @@ export function CardsPage() {
 					</div>
 				</div>
 			</div>
+			<Modal
+				open={isNewCardOpen}
+				title='Новая карта'
+				onCancel={() => setIsNewCardOpen(false)}
+				onOk={handleCreateCard}
+				okText='Оформить'
+				cancelText='Отмена'
+			>
+				<div className='cards__modal'>
+					<Select
+						placeholder='Выберите тип карты'
+						value={selectedCardType}
+						onChange={(value) => setSelectedCardType(value)}
+						options={availableCardTypes.map((type) => ({
+							value: type.id,
+							label: type.name,
+						}))}
+					/>
+					{selectedCardType && (
+						<div className='cards__modal-info'>
+							<Text type='secondary'>
+								{
+									availableCardTypes.find(
+										(type) => type.id === selectedCardType,
+									)?.description
+								}
+							</Text>
+						</div>
+					)}
+				</div>
+			</Modal>
 		</div>
 	)
 }

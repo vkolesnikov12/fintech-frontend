@@ -63,6 +63,7 @@ VITE_FORCE_ROLE=MANAGER
 - `/app/documents`
 - `/app/applications`
 - `/app/loan-payments`
+- `/app/notifications`
 - `/app/profile-settings`
 - `/app/manager-dashboard`
 - `/app/application-pipeline`
@@ -224,11 +225,19 @@ Query params: `page`, `size`, `sort` + фильтры `type`, `status`, `minRate
 
 `POST /api/v1/accounts/{id}/withdraw`
 
+`GET /api/v1/transfers/templates`
+
 ### Cards
 
 `GET /api/v1/accounts/search?clientId=X&type=CHECKING`
 
 `PATCH /api/v1/accounts/{id}/status`
+
+`POST /api/v1/accounts`
+
+`GET /api/v1/cards/types`
+
+`POST /api/v1/accounts/{id}/limit`
 
 ### Documents
 
@@ -239,6 +248,8 @@ Query params: `page`, `size`, `sort` + фильтры `type`, `status`, `minRate
 `GET /api/v1/documents/{id}/download`
 
 `DELETE /api/v1/documents/{id}`
+
+`GET /api/v1/documents/{id}/download`
 
 ### Applications
 
@@ -268,6 +279,64 @@ Query params: `page`, `size`, `sort` + фильтры `type`, `status`, `minRate
 
 `GET /api/v1/analytics/applications/stats`
 
+`GET /api/v1/reports/daily`
+
+`PATCH /api/v1/manager/applications/{id}/assign`
+
+`GET /api/v1/analytics/team/activity`
+
+Request/Response (добавлены под UI-кнопки панели менеджера):
+
+`GET /api/v1/reports/daily`
+
+Response:
+
+```json
+{
+	"date": "YYYY-MM-DD",
+	"totalApplications": 0,
+	"approved": 0,
+	"rejected": 0,
+	"avgProcessingHours": 0
+}
+```
+
+`PATCH /api/v1/manager/applications/{id}/assign`
+
+Request:
+
+```json
+{
+	"managerId": 0
+}
+```
+
+Response:
+
+```json
+{
+	"applicationId": 0,
+	"assignedTo": 0,
+	"status": "ASSIGNED"
+}
+```
+
+`GET /api/v1/analytics/team/activity`
+
+Response:
+
+```json
+[
+	{
+		"managerId": 0,
+		"name": "string",
+		"status": "ONLINE | REVIEWING | OFFLINE",
+		"completed": 0,
+		"progress": 0
+	}
+]
+```
+
 ### Application Pipeline
 
 `GET /api/v1/manager/applications`
@@ -277,6 +346,10 @@ Query params: `page`, `size`, `sort` + фильтры `type`, `status`, `minRate
 `POST /api/v1/manager/applications/bulk-status`
 
 `GET /api/v1/composite/application-overview/{applicationId}`
+
+`GET /api/v1/manager/applications?status={STATUS}&product={PRODUCT}&search={QUERY}&sort=createdAt,desc`
+
+`GET /api/v1/manager/applications?status={STATUS}&product={PRODUCT}&search={QUERY}&sort=amount,desc`
 
 ### Application Details
 
@@ -474,6 +547,12 @@ Response:
 ### Notifications
 
 `GET /api/v1/notifications/history?recipientId=X&limit=5`
+
+### Accounts
+
+`PATCH /api/v1/accounts/{id}/status`
+
+`POST /api/v1/accounts/{id}/close`
 
 Response:
 

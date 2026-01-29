@@ -30,10 +30,12 @@
 
 .system-configuration__table,
 .system-configuration__history {
-	background: #ffffff;
+	background: var(--glass-bg);
+	border: 1px solid var(--glass-border);
 	border-radius: 16px;
 	padding: 16px 20px;
-	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+	box-shadow: var(--glass-shadow);
+	backdrop-filter: blur(16px);
 }
 
 .system-configuration__section-header {
@@ -45,7 +47,7 @@
 
 .system-configuration__section-header .ant-btn-link {
 	padding: 0;
-	color: #1b4c63;
+	color: var(--ink);
 	font-weight: 500;
 }
 
@@ -56,17 +58,20 @@
 }
 
 .system-configuration__history-item {
-	background: #f8fafc;
+	background: var(--glass-bg);
+	border: 1px solid var(--glass-border);
 	border-radius: 12px;
 	padding: 12px;
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
+	box-shadow: var(--glass-shadow);
+	backdrop-filter: blur(12px);
 }
 
 .system-configuration__history-title {
 	font-weight: 600;
-	color: #1f2b35;
+	color: var(--ink);
 }
 
 .system-configuration__actions {
@@ -75,7 +80,7 @@
 }
 
 .system-configuration__table .ant-table-thead > tr > th {
-	background: #f8fafc;
+	background: var(--glass-bg);
 	font-weight: 600;
 }
 

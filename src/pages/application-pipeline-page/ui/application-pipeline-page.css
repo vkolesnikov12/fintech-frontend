@@ -36,10 +36,12 @@
 }
 
 .application-pipeline__column {
-	background: #ffffff;
+	background: var(--glass-bg);
+	border: 1px solid var(--glass-border);
 	border-radius: 16px;
 	padding: 12px;
-	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+	box-shadow: var(--glass-shadow);
+	backdrop-filter: blur(16px);
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
@@ -59,13 +61,16 @@
 }
 
 .application-pipeline__card {
-	background: #f8fafc;
+	background: var(--glass-bg);
+	border: 1px solid var(--glass-border);
 	border-radius: 12px;
 	padding: 12px;
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
 	cursor: grab;
+	box-shadow: var(--glass-shadow);
+	backdrop-filter: blur(12px);
 }
 
 .application-pipeline__card:active {
@@ -80,7 +85,7 @@
 
 .application-pipeline__card-title {
 	font-weight: 600;
-	color: #1f2b35;
+	color: var(--ink);
 }
 
 .application-pipeline__card-footer {
@@ -97,7 +102,7 @@
 }
 
 .application-pipeline__card-link {
-	color: #1b4c63;
+	color: var(--ink);
 	font-weight: 500;
 }
 

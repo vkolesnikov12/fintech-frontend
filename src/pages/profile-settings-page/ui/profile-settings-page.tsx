@@ -82,7 +82,7 @@ export function ProfileSettingsPage() {
 			return
 		}
 
-		messageApi.success('Пароль изменен (mock)')
+		messageApi.success('POST /api/v1/auth/password/change (mock)')
 	}
 
 	const tabItems: TabsProps['items'] = [
@@ -285,7 +285,7 @@ export function ProfileSettingsPage() {
 			{contextHolder}
 			<div className='profile-settings__header'>
 				<div>
-					<Title level={3}>Профиль и настройки</Title>
+					<Title level={3}>Аккаунт</Title>
 					<Text type='secondary'>
 						Управление профилем, безопасностью и уведомлениями
 					</Text>

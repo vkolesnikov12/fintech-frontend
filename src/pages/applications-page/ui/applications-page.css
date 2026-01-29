@@ -22,6 +22,12 @@
 	min-width: 200px;
 }
 
+.applications__modal {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
 .applications__grid {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(220px, 1fr));
@@ -29,10 +35,12 @@
 }
 
 .applications__card {
-	background: #ffffff;
+	background: var(--glass-bg);
+	border: 1px solid var(--glass-border);
 	border-radius: 16px;
 	padding: 16px;
-	box-shadow: 0 12px 24px rgba(16, 24, 40, 0.05);
+	box-shadow: var(--glass-shadow);
+	backdrop-filter: blur(16px);
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
@@ -46,13 +54,13 @@
 
 .applications__title {
 	font-weight: 600;
-	color: #1f2b35;
+	color: var(--ink);
 }
 
 .applications__amount {
 	font-size: 20px;
 	font-weight: 600;
-	color: #1f2b35;
+	color: var(--ink);
 }
 
 .applications__actions {
@@ -64,7 +72,7 @@
 
 .applications__actions .ant-btn-link {
 	padding: 0;
-	color: #1b4c63;
+	color: var(--ink);
 	font-weight: 500;
 }
 
@@ -73,7 +81,7 @@
 }
 
 .applications__card .ant-progress-bg {
-	background: #1b4c63;
+	background: rgba(0, 0, 0, 0.25);
 }
 
 @media (max-width: 1200px) {
