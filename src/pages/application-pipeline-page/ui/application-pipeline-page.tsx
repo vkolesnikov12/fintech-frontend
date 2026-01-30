@@ -144,7 +144,6 @@ export function ApplicationPipelinePage() {
 					: prev.filter((item) => item !== id),
 			)
 		}
-	}
 
 	const handleBulkAction = (action: string) => {
 		if (!selectedCount) {

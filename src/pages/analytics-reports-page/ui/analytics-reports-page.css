@@ -38,6 +38,17 @@
 	gap: 16px;
 }
 
+.analytics-reports__filters {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.analytics-reports__filters .ant-select,
+.analytics-reports__filters .ant-input {
+	min-width: 200px;
+}
+
 .analytics-reports__panel {
 	border-radius: 16px;
 	background: var(--glass-bg);

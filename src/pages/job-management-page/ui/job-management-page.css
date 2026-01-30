@@ -78,6 +78,17 @@
 	background: transparent;
 }
 
+.job-management__modal {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.job-management__modal .ant-select,
+.job-management__modal .ant-input {
+	width: 100%;
+}
+
 @media (max-width: 1100px) {
 	.job-management__grid {
 		grid-template-columns: 1fr;

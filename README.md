@@ -146,15 +146,116 @@ VITE_FORCE_ROLE=MANAGER
 
 `GET /api/v1/users/{id}`
 
+Response:
+
+```json
+{
+	"id": 1,
+	"username": "string",
+	"email": "string",
+	"phone": "string",
+	"firstName": "string",
+	"lastName": "string",
+	"birthDate": "YYYY-MM-DD",
+	"role": "CLIENT | MANAGER | ADMIN",
+	"active": true
+}
+```
+
 `PUT /api/v1/users/{id}`
+
+Request:
+
+```json
+{
+	"email": "string",
+	"phone": "string",
+	"firstName": "string",
+	"lastName": "string",
+	"birthDate": "YYYY-MM-DD"
+}
+```
+
+Response:
+
+```json
+{
+	"id": 1,
+	"email": "string",
+	"phone": "string",
+	"firstName": "string",
+	"lastName": "string"
+}
+```
 
 `POST /api/v1/auth/password/change`
 
+Request:
+
+```json
+{
+	"currentPassword": "string",
+	"newPassword": "string"
+}
+```
+
+Response:
+
+```json
+{
+	"status": "OK"
+}
+```
+
 `POST /api/v1/auth/verify/email`
+
+Request:
+
+```json
+{
+	"email": "string"
+}
+```
+
+Response:
+
+```json
+{
+	"status": "OK"
+}
+```
 
 `POST /api/v1/auth/verify/phone`
 
+Request:
+
+```json
+{
+	"phone": "string"
+}
+```
+
+Response:
+
+```json
+{
+	"status": "OK"
+}
+```
+
 `GET /api/v1/users/{id}/audit`
+
+Response:
+
+```json
+[
+	{
+		"id": 1,
+		"action": "string",
+		"createdAt": "YYYY-MM-DDTHH:mm:ss"
+	}
+]
+```
 
 ### Product-Service
 
@@ -215,231 +316,10 @@ Query params: `page`, `size`, `sort` + фильтры `type`, `status`, `minRate
 
 `GET /api/products/active`
 
-### Transfers
+### API Endpoints
 
-`POST /api/v1/accounts/transfer`
-
-`GET /api/v1/accounts/{id}/statement`
-
-`POST /api/v1/accounts/{id}/deposit`
-
-`POST /api/v1/accounts/{id}/withdraw`
-
-`GET /api/v1/transfers/templates`
-
-### Cards
-
-`GET /api/v1/accounts/search?clientId=X&type=CHECKING`
-
-`PATCH /api/v1/accounts/{id}/status`
-
-`POST /api/v1/accounts`
-
-`GET /api/v1/cards/types`
-
-`POST /api/v1/accounts/{id}/limit`
-
-### Documents
-
-`GET /api/v1/documents/search`
-
-`POST /api/v1/documents/upload`
-
-`GET /api/v1/documents/{id}/download`
-
-`DELETE /api/v1/documents/{id}`
-
-`GET /api/v1/documents/{id}/download`
-
-### Applications
-
-`GET /api/v1/clients/{clientId}/applications`
-
-`POST /api/v1/applications`
-
-`GET /api/v1/applications/{applicationId}/documents`
-
-`POST /api/v1/documents/upload`
-
-`PATCH /api/v1/applications/{id}/cancel`
-
-### Loan Payments
-
-`GET /api/v1/accounts/{id}/payment-schedule`
-
-`POST /api/v1/accounts/{id}/payments`
-
-`GET /api/v1/accounts/{id}/statement?transactionType=LOAN_PAYMENT`
-
-### Manager Dashboard
-
-`GET /api/v1/analytics/real-time/dashboard`
-
-`GET /api/v1/manager/applications?assigned=false`
-
-`GET /api/v1/analytics/applications/stats`
-
-`GET /api/v1/reports/daily`
-
-`PATCH /api/v1/manager/applications/{id}/assign`
-
-`GET /api/v1/analytics/team/activity`
-
-Request/Response (добавлены под UI-кнопки панели менеджера):
-
-`GET /api/v1/reports/daily`
-
-Response:
-
-```json
-{
-	"date": "YYYY-MM-DD",
-	"totalApplications": 0,
-	"approved": 0,
-	"rejected": 0,
-	"avgProcessingHours": 0
-}
-```
-
-`PATCH /api/v1/manager/applications/{id}/assign`
-
-Request:
-
-```json
-{
-	"managerId": 0
-}
-```
-
-Response:
-
-```json
-{
-	"applicationId": 0,
-	"assignedTo": 0,
-	"status": "ASSIGNED"
-}
-```
-
-`GET /api/v1/analytics/team/activity`
-
-Response:
-
-```json
-[
-	{
-		"managerId": 0,
-		"name": "string",
-		"status": "ONLINE | REVIEWING | OFFLINE",
-		"completed": 0,
-		"progress": 0
-	}
-]
-```
-
-### Application Pipeline
-
-`GET /api/v1/manager/applications`
-
-`PATCH /api/v1/applications/{id}/status`
-
-`POST /api/v1/manager/applications/bulk-status`
-
-`GET /api/v1/composite/application-overview/{applicationId}`
-
-`GET /api/v1/manager/applications?status={STATUS}&product={PRODUCT}&search={QUERY}&sort=createdAt,desc`
-
-`GET /api/v1/manager/applications?status={STATUS}&product={PRODUCT}&search={QUERY}&sort=amount,desc`
-
-### Application Details
-
-`GET /api/v1/composite/application-overview/{applicationId}`
-
-`GET /api/v1/scoring/history/{clientId}`
-
-`GET /api/v1/applications/{applicationId}/documents`
-
-`PATCH /api/v1/applications/{id}/status`
-
-`POST /api/v1/notifications/send`
-
-### Document Flow
-
-`GET /api/v1/documents/search?status=UPLOADED`
-
-`GET /api/v1/documents/{id}/download`
-
-`PATCH /api/v1/documents/{id}/status`
-
-`POST /api/v1/notifications/send`
-
-### Product Management
-
-`GET /api/v1/products`
-
-`POST /api/v1/products`
-
-`PUT /api/v1/products/{id}`
-
-`PATCH /api/v1/products/{id}/status`
-
-`DELETE /api/v1/products/{id}`
-
-`GET /api/v1/products/{id}/audit`
-
-### System Monitoring
-
-`/actuator/health`
-
-`GET /api/v1/analytics/operational/metrics`
-
-`Prometheus monitoring endpoints`
-
-### User Management
-
-`GET /api/v1/users/search`
-
-`POST /api/v1/auth/register`
-
-`PUT /api/v1/users/{id}`
-
-`POST /api/v1/auth/password/reset-request`
-
-### Job Management
-
-`GET /api/v1/jobs`
-
-`POST /api/v1/jobs/schedule`
-
-`POST /api/v1/jobs/execute`
-
-`POST /api/v1/jobs/{id}/cancel`
-
-`GET /api/v1/jobs/types`
-
-### System Configuration
-
-`GET /api/v1/configs`
-
-`POST /api/v1/configs`
-
-`PUT /api/v1/configs/{key}`
-
-`DELETE /api/v1/configs/{key}`
-
-`GET /api/v1/configs/refresh`
-
-### Analytics & Reports
-
-`/api/v1/analytics/*`
-
-`POST /api/v1/reports/generate`
-
-`GET /api/v1/reports`
-
-`GET /api/v1/reports/{id}/download`
-
-`POST /api/v1/reports/scheduled`
+Полный список эндпоинтов с request/response см. ниже в разделе
+`Backend endpoints checklist`.
 
 ## Backend endpoints checklist
 
@@ -548,12 +428,6 @@ Response:
 
 `GET /api/v1/notifications/history?recipientId=X&limit=5`
 
-### Accounts
-
-`PATCH /api/v1/accounts/{id}/status`
-
-`POST /api/v1/accounts/{id}/close`
-
 Response:
 
 ```json
@@ -566,6 +440,38 @@ Response:
 		"createdAt": "YYYY-MM-DDTHH:mm:ss"
 	}
 ]
+```
+
+### Accounts
+
+`PATCH /api/v1/accounts/{id}/status`
+
+Request:
+
+```json
+{
+	"status": "ACTIVE | BLOCKED | CLOSED"
+}
+```
+
+Response:
+
+```json
+{
+	"id": 1,
+	"status": "BLOCKED"
+}
+```
+
+`POST /api/v1/accounts/{id}/close`
+
+Response:
+
+```json
+{
+	"id": 1,
+	"status": "CLOSED"
+}
 ```
 
 ### Accounts
@@ -1008,6 +914,745 @@ Response:
 		"createdAt": "YYYY-MM-DDTHH:mm:ss"
 	}
 ]
+```
+
+### Cards
+
+`GET /api/v1/cards/types`
+
+Response:
+
+```json
+[
+	{
+		"id": "virtual",
+		"name": "Виртуальная карта",
+		"description": "string"
+	}
+]
+```
+
+`POST /api/v1/accounts/{id}/limit`
+
+Request:
+
+```json
+{
+	"dailyLimit": 0,
+	"transactionLimit": 0
+}
+```
+
+Response:
+
+```json
+{
+	"id": 1,
+	"dailyLimit": 0,
+	"transactionLimit": 0
+}
+```
+
+### Transfers
+
+`GET /api/v1/transfers/templates`
+
+Response:
+
+```json
+[
+	{
+		"id": 1,
+		"name": "string",
+		"fromAccountId": 1,
+		"toAccountId": 2,
+		"amount": 0,
+		"currency": "RUB | USD | EUR"
+	}
+]
+```
+
+### Manager Dashboard
+
+`GET /api/v1/analytics/real-time/dashboard`
+
+Response:
+
+```json
+{
+	"updatedAt": "YYYY-MM-DDTHH:mm:ss",
+	"totals": {
+		"newApplications": 0,
+		"approved": 0,
+		"rejected": 0,
+		"conversion": 0
+	}
+}
+```
+
+`GET /api/v1/manager/applications?assigned=false`
+
+Response:
+
+```json
+[
+	{
+		"id": 1,
+		"clientName": "string",
+		"product": "string",
+		"amount": 0,
+		"createdAt": "YYYY-MM-DDTHH:mm:ss"
+	}
+]
+```
+
+`GET /api/v1/analytics/applications/stats`
+
+Response:
+
+```json
+{
+	"byStatus": {},
+	"byProduct": {}
+}
+```
+
+`GET /api/v1/reports/daily`
+
+Response:
+
+```json
+{
+	"date": "YYYY-MM-DD",
+	"totalApplications": 0,
+	"approved": 0,
+	"rejected": 0,
+	"avgProcessingHours": 0
+}
+```
+
+`PATCH /api/v1/manager/applications/{id}/assign`
+
+Request:
+
+```json
+{
+	"managerId": 0
+}
+```
+
+Response:
+
+```json
+{
+	"applicationId": 0,
+	"assignedTo": 0,
+	"status": "ASSIGNED"
+}
+```
+
+`GET /api/v1/analytics/team/activity`
+
+Response:
+
+```json
+[
+	{
+		"managerId": 0,
+		"name": "string",
+		"status": "ONLINE | REVIEWING | OFFLINE",
+		"completed": 0,
+		"progress": 0
+	}
+]
+```
+
+### Application Pipeline
+
+`GET /api/v1/manager/applications`
+
+Query params: `status`, `product`, `search`, `sort`
+
+Response:
+
+```json
+[
+	{
+		"id": 1,
+		"status": "NEW | PROCESSING | DOCUMENTS | APPROVED | REJECTED",
+		"clientName": "string",
+		"product": "string",
+		"amount": 0,
+		"createdAt": "YYYY-MM-DDTHH:mm:ss"
+	}
+]
+```
+
+`POST /api/v1/manager/applications/bulk-status`
+
+Request:
+
+```json
+{
+	"ids": [1, 2],
+	"action": "ASSIGN | APPROVE | REJECT"
+}
+```
+
+Response:
+
+```json
+{
+	"updated": 0,
+	"status": "OK"
+}
+```
+
+`PATCH /api/v1/applications/{id}/status`
+
+Request:
+
+```json
+{
+	"status": "NEW | PROCESSING | DOCUMENTS | APPROVED | REJECTED"
+}
+```
+
+Response:
+
+```json
+{
+	"id": 1,
+	"status": "APPROVED"
+}
+```
+
+`GET /api/v1/composite/application-overview/{applicationId}`
+
+Response:
+
+```json
+{
+	"application": {},
+	"client": {},
+	"scoring": {},
+	"documents": []
+}
+```
+
+### Application Details
+
+`GET /api/v1/scoring/history/{clientId}`
+
+Response:
+
+```json
+[
+	{
+		"id": 1,
+		"score": 0,
+		"createdAt": "YYYY-MM-DDTHH:mm:ss"
+	}
+]
+```
+
+`POST /api/v1/notifications/send`
+
+Request:
+
+```json
+{
+	"recipientId": 0,
+	"applicationId": 0,
+	"message": "string"
+}
+```
+
+Response:
+
+```json
+{
+	"status": "OK"
+}
+```
+
+### Document Flow
+
+`GET /api/v1/documents/search?status=UPLOADED`
+
+Response:
+
+```json
+[
+	{
+		"id": 1,
+		"name": "string",
+		"type": "STATEMENT | CERTIFICATE | AGREEMENT",
+		"status": "UPLOADED",
+		"createdAt": "YYYY-MM-DDTHH:mm:ss"
+	}
+]
+```
+
+`PATCH /api/v1/documents/{id}/status`
+
+Request:
+
+```json
+{
+	"status": "APPROVED | REJECTED | REQUESTED"
+}
+```
+
+Response:
+
+```json
+{
+	"id": 1,
+	"status": "APPROVED"
+}
+```
+
+`POST /api/v1/notifications/send`
+
+Request:
+
+```json
+{
+	"recipientId": 0,
+	"applicationId": 0,
+	"message": "string"
+}
+```
+
+Response:
+
+```json
+{
+	"status": "OK"
+}
+```
+
+### Product Management
+
+`GET /api/v1/products`
+
+Query params: `type`, `status`, `search`
+
+Response:
+
+```json
+[
+	{
+		"id": 1,
+		"code": "string",
+		"name": "string",
+		"type": "CREDIT | DEPOSIT | INVESTMENT",
+		"interestRate": 0,
+		"currency": "RUB | USD | EUR",
+		"status": "ACTIVE | INACTIVE"
+	}
+]
+```
+
+`POST /api/v1/products`
+
+Request:
+
+```json
+{
+	"code": "string",
+	"name": "string",
+	"type": "CREDIT | DEPOSIT | INVESTMENT",
+	"interestRate": 0,
+	"currency": "RUB | USD | EUR",
+	"active": true
+}
+```
+
+Response:
+
+```json
+{
+	"id": 1,
+	"status": "ACTIVE"
+}
+```
+
+`PUT /api/v1/products/{id}`
+
+Request:
+
+```json
+{
+	"name": "string",
+	"interestRate": 0,
+	"currency": "RUB | USD | EUR"
+}
+```
+
+Response:
+
+```json
+{
+	"id": 1,
+	"status": "ACTIVE"
+}
+```
+
+`PATCH /api/v1/products/{id}/status`
+
+Request:
+
+```json
+{
+	"status": "ACTIVE | INACTIVE"
+}
+```
+
+Response:
+
+```json
+{
+	"id": 1,
+	"status": "INACTIVE"
+}
+```
+
+`DELETE /api/v1/products/{id}`
+
+Response:
+
+```json
+{
+	"status": "DELETED"
+}
+```
+
+`GET /api/v1/products/{id}/audit`
+
+Response:
+
+```json
+[
+	{
+		"id": 1,
+		"action": "string",
+		"createdAt": "YYYY-MM-DDTHH:mm:ss"
+	}
+]
+```
+
+### User Management
+
+`GET /api/v1/users/search`
+
+Query params: `role`, `status`, `query`
+
+Response:
+
+```json
+[
+	{
+		"id": 1,
+		"username": "string",
+		"email": "string",
+		"role": "CLIENT | MANAGER | ADMIN",
+		"status": "ACTIVE | BLOCKED"
+	}
+]
+```
+
+`PATCH /api/v1/users/{id}/status`
+
+Request:
+
+```json
+{
+	"status": "ACTIVE | BLOCKED"
+}
+```
+
+Response:
+
+```json
+{
+	"id": 1,
+	"status": "ACTIVE"
+}
+```
+
+### Job Management
+
+`GET /api/v1/jobs`
+
+Query params: `type`, `status`
+
+Response:
+
+```json
+[
+	{
+		"id": 1,
+		"name": "string",
+		"type": "SYNC | LIMITS | CLEANUP",
+		"schedule": "string",
+		"status": "ACTIVE | PAUSED",
+		"lastRun": "YYYY-MM-DDTHH:mm:ss"
+	}
+]
+```
+
+`POST /api/v1/jobs/schedule`
+
+Request:
+
+```json
+{
+	"jobType": "SYNC | LIMITS | CLEANUP",
+	"cron": "string"
+}
+```
+
+Response:
+
+```json
+{
+	"status": "SCHEDULED"
+}
+```
+
+`POST /api/v1/jobs/execute`
+
+Request:
+
+```json
+{
+	"jobType": "SYNC | LIMITS | CLEANUP"
+}
+```
+
+Response:
+
+```json
+{
+	"status": "STARTED"
+}
+```
+
+`POST /api/v1/jobs/{id}/cancel`
+
+Response:
+
+```json
+{
+	"id": 1,
+	"status": "CANCELLED"
+}
+```
+
+`GET /api/v1/jobs/types`
+
+Response:
+
+```json
+["SYNC", "LIMITS", "CLEANUP"]
+```
+
+### System Configuration
+
+`GET /api/v1/configs`
+
+Response:
+
+```json
+[
+	{
+		"key": "string",
+		"value": "string",
+		"category": "SYSTEM | BUSINESS | INTEGRATION"
+	}
+]
+```
+
+`POST /api/v1/configs`
+
+Request:
+
+```json
+{
+	"key": "string",
+	"value": "string",
+	"category": "SYSTEM | BUSINESS | INTEGRATION"
+}
+```
+
+Response:
+
+```json
+{
+	"status": "CREATED"
+}
+```
+
+`PUT /api/v1/configs/{key}`
+
+Request:
+
+```json
+{
+	"value": "string"
+}
+```
+
+Response:
+
+```json
+{
+	"status": "UPDATED"
+}
+```
+
+`DELETE /api/v1/configs/{key}`
+
+Response:
+
+```json
+{
+	"status": "DELETED"
+}
+```
+
+`GET /api/v1/configs/refresh`
+
+Response:
+
+```json
+{
+	"status": "OK"
+}
+```
+
+### System Monitoring
+
+`/actuator/health`
+
+Response:
+
+```json
+{
+	"status": "UP | DOWN",
+	"components": {}
+}
+```
+
+`GET /api/v1/analytics/operational/metrics`
+
+Response:
+
+```json
+{
+	"cpu": 0,
+	"memory": 0,
+	"requestsPerMinute": 0
+}
+```
+
+`Prometheus monitoring endpoints`
+
+### Analytics & Reports
+
+`GET /api/v1/analytics/widgets`
+
+Query params: `period`
+
+Response:
+
+```json
+[
+	{
+		"id": 1,
+		"title": "string",
+		"value": "string",
+		"trend": "string"
+	}
+]
+```
+
+`GET /api/v1/analytics/dashboard`
+
+Query params: `type`
+
+Response:
+
+```json
+{
+	"chart": [],
+	"summary": {}
+}
+```
+
+`POST /api/v1/reports/generate`
+
+Request:
+
+```json
+{
+	"type": "SALES | RISK | OPERATIONS",
+	"period": "DAY | WEEK | MONTH | YEAR"
+}
+```
+
+Response:
+
+```json
+{
+	"reportId": 1,
+	"status": "PROCESSING"
+}
+```
+
+`GET /api/v1/reports`
+
+Query params: `type`, `status`, `search`
+
+Response:
+
+```json
+[
+	{
+		"id": 1,
+		"name": "string",
+		"type": "SALES | RISK | OPERATIONS",
+		"status": "READY | PROCESSING",
+		"createdAt": "YYYY-MM-DD"
+	}
+]
+```
+
+`GET /api/v1/reports/{id}/download`
+
+Query params: `format`
+
+Response: file stream
+
+`POST /api/v1/reports/scheduled`
+
+Request:
+
+```json
+{
+	"type": "SALES | RISK | OPERATIONS",
+	"cron": "string"
+}
+```
+
+Response:
+
+```json
+{
+	"status": "SCHEDULED"
+}
 ```
 
 ## Backend alignment notes
